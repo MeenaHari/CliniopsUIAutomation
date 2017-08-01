@@ -1,53 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite guice-stage="DEVELOPMENT" name="Failed suite [Suite]" parallel="tests">
-  <parameter name="browser" value="IE"/>
-  <test name="IETest(failed)" parallel="tests">
-    <parameter name="browser" value="IE"/>
+<suite guice-stage="DEVELOPMENT" name="Failed suite [Suite]">
+  <test name="Test(failed)">
     <classes>
-      <class name="com.testing.Cliniops.Cliniops_AutomationScriptsTest">
+      <class name="com.testing.Cliniops.Cliniops_DriverScriptTest">
         <methods>
-          <include name="auto_clini_login_002"/>
-          <include name="closeBrowser"/>
-          <include name="closeBrowser"/>
-          <include name="closeBrowser"/>
-          <include name="Selectbrowser"/>
-          <include name="Selectbrowser"/>
-          <include name="Selectbrowser"/>
+          <include name="cliniops_driver"/>
         </methods>
-      </class> <!-- com.testing.Cliniops.Cliniops_AutomationScriptsTest -->
-    </classes>
-  </test> <!-- IETest(failed) -->
-  <test name="ChromeTest(failed)" parallel="tests">
-    <parameter name="browser" value="chrome"/>
-    <classes>
-      <class name="com.testing.Cliniops.Cliniops_AutomationScriptsTest">
-        <methods>
-          <include name="auto_clini_login_002"/>
-          <include name="closeBrowser"/>
-          <include name="closeBrowser"/>
-          <include name="closeBrowser"/>
-          <include name="Selectbrowser"/>
-          <include name="Selectbrowser"/>
-          <include name="Selectbrowser"/>
-        </methods>
-      </class> <!-- com.testing.Cliniops.Cliniops_AutomationScriptsTest -->
-    </classes>
-  </test> <!-- ChromeTest(failed) -->
-  <test name="Test(failed)" parallel="tests">
-    <parameter name="browser" value="firefox"/>
-    <classes>
-      <class name="com.testing.Cliniops.Cliniops_AutomationScriptsTest">
-        <methods>
-          <include name="auto_clini_login_002"/>
-          <include name="closeBrowser"/>
-          <include name="closeBrowser"/>
-          <include name="closeBrowser"/>
-          <include name="Selectbrowser"/>
-          <include name="Selectbrowser"/>
-          <include name="Selectbrowser"/>
-        </methods>
-      </class> <!-- com.testing.Cliniops.Cliniops_AutomationScriptsTest -->
+      </class> <!-- com.testing.Cliniops.Cliniops_DriverScriptTest -->
     </classes>
   </test> <!-- Test(failed) -->
 </suite> <!-- Failed suite [Suite] -->

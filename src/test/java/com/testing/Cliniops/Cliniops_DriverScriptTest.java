@@ -7,16 +7,22 @@ import java.lang.reflect.Method;
 import org.apache.tools.ant.taskdefs.UpToDate;
 import org.testng.annotations.Test;
 
-public class Cliniops_DriverScriptTest {
-
+public class Cliniops_DriverScriptTest {  
+  
 	
 	@Test
 	public static void cliniops_driver() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, ClassNotFoundException, InstantiationException{
 
 		Cliniops_AutomationScriptsTest CAS = new Cliniops_AutomationScriptsTest();
 
-		String testDataPath = "C:\\Users\\Naresh\\Git\\July24\\cliniops_AutomationScripts_Execution.xls";
-		String ReportsPath="C:\\Users\\Naresh\\Git\\July24\\test-output\\Suite\\";
+
+		//String testDataPath = "C:/Users/Sreeram/git/Testing_Cliniops/cliniops_AutomationScripts_Execution.xls";
+		String testDataPath = "C:/Users/Zunaira's/git_Cliniops/CliniopsUIAutomation/cliniops_AutomationScripts_Execution.xls";
+		
+		//String ReportsPath="C:/Users/Sreeram/git/Testing_Cliniops/test-output/Suite/CliniOps_Report";
+		String ReportsPath="C:/Users/Zunaira's/git_Cliniops/CliniopsUIAutomation/test-output/Suite/CliniOps_Report";
+		
+
 		String[][] recData = Cliniops_ReusableMethodsTest.readSheet(testDataPath, "Sheet1");
 
 		String tc = null;

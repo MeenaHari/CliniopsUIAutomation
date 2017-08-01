@@ -18,9 +18,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class Cliniops_ReusableMethodsTest { 
-
-	static WebDriver driver ;
+public class Cliniops_ReusableMethodsTest {   
+  
+	static WebDriver driver ;  
 	static String htmlname;
 	static Date cur_dt = null;
 	static BufferedWriter bw = null;
@@ -95,7 +95,7 @@ public class Cliniops_ReusableMethodsTest {
 	//created by:Automation team
 	//creation date:12/15/2016
 	//modified date:12/15/2016
-	public static void ButtonClick(WebElement obj,String objname) throws IOException{
+	/*public static void ButtonClick(WebElement obj,String objname) throws IOException{
 		if(obj.isDisplayed())
 		{
 			obj.click();
@@ -105,34 +105,12 @@ public class Cliniops_ReusableMethodsTest {
 			Update_Report("Fail","ButtonClick",objname+" is not displayed");
 		}	
 		
-	}
+	}*/
 	
 
-	/* Name of the method:ErrorMessage
-		    Brief description:used to display message on matching actual text with expected text
-			arguments:obj->WebElement,Expectedtext->text used to compare with actual text,objname->name of the object
-			created by:Automation team
-			creation date:12/15/2016
-			modified date:12/15/2016 
-	 */
-	public static void ErrorMessage(WebElement obj,String Expectedtext,String objname) throws IOException{
-		if(obj.isDisplayed())
-		{
-			String Actualtext=obj.getText().trim();
-			if(Expectedtext.trim().contains(Actualtext.trim())){
-				Update_Report("Pass","ErrorMessage","Actual message matching with expected message:"+Actualtext);
-			}
-			else{
-				Update_Report("Fail","ErrorMessage","Actual message not matching with expected message:"+Actualtext);
-			}
-		}
-		else{
-			Update_Report("Fail","ErrorMessage",objname+" is not displayed,please check your application");
-		}
-	}
 	/* 
-	 * Name of the Method: validateMsg
-	 * Brief description : validate message displayed on the web page
+	 * Name of the Method: validate
+	 * Brief description : validate text displayed on the web page
 	 * Arguments: obj --> Webelement Object,  expectedText --> expected text to be displayed, objName --> name of hte object
 	 * Created by: Automation team
 	 * Creation date : July 17 2017
@@ -140,18 +118,20 @@ public class Cliniops_ReusableMethodsTest {
 	 * 
 	 * */	
 
-	public static void validateMsg(WebElement obj, String expectedText, String objName) throws IOException{
+	public static void validate(WebElement obj, String expectedText, String objName,String stepName) throws IOException{
 		if(obj.isDisplayed()){
 			String actualText = obj.getText().trim();
 			if(expectedText.equals(actualText)){
-				Update_Report("Pass", "validate message", "Actual message is matching with expected message");
+				Update_Report("Pass", stepName, "Actual text is matching with expected text");
 			}else{
-				Update_Report("Fail", "validate message", "Actual message is matching with expected message");
+				Update_Report("Fail", stepName, "Actual text is not matching with expected text");
 			}
 		}else{
-			Update_Report("Fail",objName," is not displayed, please check your application");
+			Update_Report("Fail",stepName,objName+ " is not displayed, please check your application");
 		}
 	}
+	
+	
 	/* 
 	 * Name of the Method: validateMsg_Attribute
 	 * Brief description : validate message displayed on the web page
@@ -163,7 +143,8 @@ public class Cliniops_ReusableMethodsTest {
 	 */	
 
 	public static void validateMsg_Attribute(WebElement obj, String expectedText, String objName,String attributeName) throws IOException{
-		if(obj.isDisplayed()){
+		//if(obj.isDisplayed()){
+		if(obj.isEnabled()){	
 			String actualText = obj.getAttribute(attributeName);
 			if(expectedText.equals(actualText)){
 				Update_Report("Pass","validateMsg_Attribute","Actual message matching with expected message:"+ actualText);

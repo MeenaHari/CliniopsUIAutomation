@@ -10,6 +10,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
@@ -123,15 +124,15 @@ public static WebDriver getInstance(){
 		 		//it will verify the dropdown's are enabled
 		 		WebElement selectStudy= dr.findElement(By.id("investigator_study"));
 		 		boolean selStudy=selectStudy.isEnabled();
-		 		assertEquals(selStudy,true,"Study is enabled");
+		 		Assert.assertEquals(selStudy,true,"Study is enabled");
 		 		
 		 		WebElement selectLang= dr.findElement(By.id("lang_type"));
 		 		boolean lang=selectLang.isEnabled();
-		 		assertEquals(lang, true,"Lang is enabled");	 
+		 		Assert.assertEquals(lang, true,"Lang is enabled");	 
 		 		
 		 		WebElement login=dr.findElement(By.xpath("//*[@title='Login']"));
 		 		boolean loginBtn=login.isEnabled();
-		 		assertEquals(loginBtn, true,"Login is enabled");
+		 		Assert.assertEquals(loginBtn, true,"Login is enabled");
 		 		
 		 		Thread.sleep(2000);
 		 		selectStudy.click();
@@ -159,7 +160,7 @@ public static WebDriver getInstance(){
 				String ActualURL= dr.getCurrentUrl();
 				String ExpectedURL="https://bridgetherapeutics.cliniops.com/investigator";
 				
-				assertEquals(ActualURL, ExpectedURL);
+				Assert.assertEquals(ActualURL, ExpectedURL);
 				WebElement homePage=dr.findElement(By.className("current"));
 				validateText(homePage, "Home", "HomePage","HomePage Display");
 							

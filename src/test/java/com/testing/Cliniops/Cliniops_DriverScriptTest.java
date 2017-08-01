@@ -7,7 +7,7 @@ import java.lang.reflect.Method;
 import org.apache.tools.ant.taskdefs.UpToDate;
 import org.testng.annotations.Test;
 
-public class Cliniops_DriverScriptTest {
+public class Cliniops_DriverScriptTest {  
   
 	
 	@Test
@@ -15,8 +15,8 @@ public class Cliniops_DriverScriptTest {
 
 		Cliniops_AutomationScriptsTest CAS = new Cliniops_AutomationScriptsTest();
 
-		String testDataPath = "C:\\Users\\Naresh\\Git\\July24\\cliniops_AutomationScripts_Execution.xls";
-		String ReportsPath="C:\\Users\\Naresh\\Git\\July24\\test-output\\Suite\\";
+		String testDataPath = "C:\\Users\\Naresh\\Cliniops_Workspace\\Backup2\\cliniops_AutomationScripts_Execution.xls";
+		String ReportsPath="C:\\Users\\Naresh\\Cliniops_Workspace\\Backup2\\test-output\\Suite\\Report";
 		String[][] recData = Cliniops_ReusableMethodsTest.readSheet(testDataPath, "Sheet1");
 
 		String tc = null;

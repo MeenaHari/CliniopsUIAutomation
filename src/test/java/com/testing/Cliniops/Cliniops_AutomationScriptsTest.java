@@ -109,18 +109,41 @@ WebDriver dr;
 			 		
 
 		 	}
-		 @Test
-		 public void auto_clini_login_002() throws IOException{
+		 @Test(enabled = false)
+		 public void auto_clini_login_003() throws IOException, InterruptedException{
 			 
-			 String expected = "Abhishek";
-			 dr.get("https://bridgetherapeutics.cliniops.com");
-			 WebElement userNameObj = dr.findElement(By.xpath(".//*[@id='username']"));
-			 enterText(userNameObj, "Abhishek", "userName object");
-			 String actual = userNameObj.getAttribute("value");
-			 validateMsg_Attribute(userNameObj, expected, "usernameObject", "value");
-			
+			 String expected = "Authenitcation failed !";
+				dr.get("https://bridgetherapeutics.cliniops.com");
+				WebElement userNameObj = dr.findElement(By.xpath(".//*[@id='username']"));
+				Thread.sleep(5000);
+				enterText(userNameObj, "Abhi", "userName object");
+
+				WebElement passwordObj = dr.findElement(By.id("password"));
+				//Thread.sleep(5000);
+				enterText(passwordObj, "xxx", "password object");
+
+				WebElement authenticateObj = dr.findElement(By.id("Authenticate"));
+				//Thread.sleep(3000);
+				ButtonClick(authenticateObj, "Authentication button object");
+
+				WebElement errMessageObj = dr.findElement(By.xpath(".//*[@id='showCustomErrMsg']"));
+
+				WebDriverWait wait = new WebDriverWait(dr, 30);
+				WebElement ele = wait.until(ExpectedConditions.visibilityOf(errMessageObj));
+				String actual = ele.getText();
+				System.out.println(actual);
+				
+				if (actual.equals(expected))
+				{
+					System.out.println("authentication error message is passed");
+				}
+				else 
+				{
+					System.out.println("Nothing to check... ");
+				}
+				 	 
+			 
 		 }
-		 
 		@AfterMethod
 		
 			public void closeBrowser(){

@@ -140,10 +140,12 @@ public static WebDriver getInstance(){
 		 		WebElement study= dr.findElement(By.xpath("//*[contains(text(),'Cisplatin/Etoposide/Rad')]"));
 		 		ac.moveToElement(selectStudy).build().perform();
 		 		String expectedTextForStudy="Cisplatin/Etoposide/Rad................-Small Cell Lung Cancer";
-				validateText(study, expectedTextForStudy, "Study Details","Study name");
+					String Actualtext=study.getText().trim();
+					if(expectedTextForStudy.equals(Actualtext))
+					{
 				dropDownByValue(selectStudy,"5");
 				Thread.sleep(2000);
-				
+					}
 				selectLang.click();
 				WebElement lang1= dr.findElement(By.xpath("//*[contains(text(),'English')]"));
 				ac.moveToElement(lang1).build().perform();
@@ -151,7 +153,7 @@ public static WebDriver getInstance(){
 		 		validateText(lang1, expectedLanguage, "Language", "Language option");
 		 		Thread.sleep(3000);
 		 	
-				
+		 		dropDownByValue(selectStudy,"5");
 				dropDownByValue(selectLang, "1");
 				Thread.sleep(2000);
 				
@@ -164,8 +166,7 @@ public static WebDriver getInstance(){
 				WebElement homePage=dr.findElement(By.className("current"));
 				validateText(homePage, "Home", "HomePage","HomePage Display");
 							
-
-			}	
+					}
 		 
 		 @Test
 			public void auto_Clini_Login_004() throws IOException, InterruptedException{
@@ -223,12 +224,21 @@ public static WebDriver getInstance(){
 
 		 }
 
-
-		
-				
+		 @Test
+		 public void auto_Clini_Home_002() throws Exception{
+			 
+			Login(dr);
+			WebElement subEnroll = dr.findElement(By.xpath("//div[@id='highcharts-0']/div[2]"));
+			clickObj(subEnroll, "Summary button for subject enrollment");
 			
-		 	
-		 
+			
+			
+			
+			 
+			 
+			 
+			 
+		 }
 		@AfterMethod
 		
 			public void closeBrowser(){

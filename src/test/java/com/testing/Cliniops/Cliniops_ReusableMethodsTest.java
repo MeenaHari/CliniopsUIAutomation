@@ -11,6 +11,7 @@ import java.util.Date;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
@@ -25,6 +26,21 @@ public class Cliniops_ReusableMethodsTest {
 	static String exeStatus = "True";
 	static int report;
 	static int j = 1;
+
+	
+	public static void Login(WebDriver dr) throws InterruptedException, IOException{
+		dr.get("https://bridgetherapeutics.cliniops.com");
+		dr.findElement(By.id("username")).sendKeys("Abhishek");
+		Thread.sleep(2000);
+		dr.findElement(By.id("password")).sendKeys("Welcome123#");
+		Thread.sleep(2000);
+		dr.findElement(By.id("Authenticate")).click();
+		Thread.sleep(2000);
+		dr.findElement(By.xpath("//*[text()='Cisplatin/Etoposide/Rad................-Small Cell Lung Cancer']")).click();
+		Thread.sleep(3000);
+		dr.findElement(By.xpath("//*[text()='English']")).click();
+		dr.findElement(By.xpath(".//*[@id='login']/div[7]/input")).click();
+		}
 
 
 	/* 

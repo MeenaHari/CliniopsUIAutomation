@@ -11,269 +11,220 @@ import java.util.Date;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import org.apache.poi.ss.usermodel.Cell;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 public class Cliniops_ReusableMethodsTest {   
-  
-	static WebDriver driver ;  
-	static String htmlname;
-	static Date cur_dt = null;
+
+
+	static String htmlname = null;
 	static BufferedWriter bw = null;
-	static BufferedWriter bw1 = null;
 	static String exeStatus = "True";
 	static int report;
-	static int j = 1;
-
-	
-	public static void Login(WebDriver dr) throws InterruptedException, IOException{
-		dr.get("https://bridgetherapeutics.cliniops.com");
-		dr.findElement(By.id("username")).sendKeys("Abhishek");
-		Thread.sleep(2000);
-		dr.findElement(By.id("password")).sendKeys("Welcome123#");
-		Thread.sleep(2000);
-		dr.findElement(By.id("Authenticate")).click();
-		Thread.sleep(2000);
-		dr.findElement(By.xpath("//*[text()='Cisplatin/Etoposide/Rad................-Small Cell Lung Cancer']")).click();
-		Thread.sleep(3000);
-		dr.findElement(By.xpath("//*[text()='English']")).click();
-		dr.findElement(By.xpath(".//*[@id='login']/div[7]/input")).click();
-		}
+	static int rowCount = 1;
+	private static String browserName = null;
+	private static int reportFlag = 0;
 
 
-	/* 
-	 * Name of the Method: enterText
-	 * Brief description : Enter text into text box field
-	 * Arguments: obj --> Webelement Object, textval --> Text to be entered, objName --> name of hte object
-	 * Created by: Automation team
-	 * Creation date : July 17 2017
-	 * last modified:  July 17 2017
-	 * */
-	public static void enterText(WebElement obj, String textVal, String objName) throws IOException{
+	/**
+	 * Used to click on a button
+	 * @param obj: WebElement button to be clicked
+	 * @param objName: Name of button
+	 * @param stepName: Name of step
+	 * @throws IOException
+	 */
+	/*
+	public static void buttonClick(WebElement obj,String objName, String stepName) throws IOException{
 		if(obj.isDisplayed()){
-			obj.sendKeys(textVal);
-			Update_Report("Pass","entertext",textVal+" is entered in "+objName);
-
-		}else{
-			Update_Report("Fail","entertext",objName+" field is not displayed,please check application");
-
+			obj.click();
+			updateReport("Pass",stepName ,objName+" is clicked");
 		}
+		else{
+			updateReport("Fail",stepName ,objName+" is not displayed");
+		}	
 
+	}*/
+
+	/**
+	 * Check if the object is enabled or not
+	 * @param obj
+	 * @param objname
+	 * @throws IOException
+	 */
+	public static void checkDisabled(WebElement obj,String objname) throws IOException{
+		if(obj.getAttribute("disabled").trim().contains("true")){
+			updateReport("Pass","Checkdisabled",objname+" is disabled");
+		}
+		else{
+			updateReport("Fail","Checkdisabled",objname+" is not disabled");
+		}
 	}
-	/* 
-	 * Name of the Method: dropDown
-	 * Brief description : Selecting the DropDown
-	 * Arguments: obj --> Webelement Object, textval --> Text to be entered 
-	 * Created by: Automation team
-	 * Creation date : July 17 2017
-	 * last modified:  July 17 2017
-	 * */
-	public static void dropDownByIndex(WebElement dd, int index) throws IOException{
 
+	/**
+	 * To click on specified object
+	 * @param obj: WebElement to be clicked
+	 * @param objName: Name of WebElement to be clicked
+	 * @throws IOException
+	 */
+	public static void clickElement(WebElement obj, String objName, String stepName) throws IOException{
+		if(obj.isDisplayed()){
+			obj.click();
+			updateReport("Pass", stepName , objName + " is clicked");
+			//System.out.println("Pass: "+ objName + " is clicked.");
+		}
+		else{
+			updateReport("Fail", stepName , objName + " is not displayed");
+		}
+	}
+
+
+	/**
+	 * Closes the buffered writer and resets all the variables
+	 * @throws IOException
+	 */
+	public static void closeReport() throws IOException{
+		rowCount = 1;
+		browserName = null;
+		reportFlag = 0;
+		htmlname = null;
+		bw.close();
+	}
+
+	/**
+	 * To select the drop down
+	 * @param dd: WebelEment drop down
+	 * @param index: Index of element to be selected
+	 * @throws IOException
+	 */
+	public static void dropDown(WebElement dd, int index) throws IOException{
 		Select select = new Select(dd);
 		if(dd.isDisplayed()){
 			select.selectByIndex(index);
-			Update_Report("Pass", "DropDown", "selected dd object by using index");
+			updateReport("Pass", "DropDown", "selected dd object by using index");
 		}
 		else{
-			Update_Report("Fail", "DropDown", "Not selected dd object by using index");
+			updateReport("Fail", "DropDown", "Not selected dd object by using index");
 		}
 
 	}
-	public static void dropDownByValue(WebElement dd, String value) throws IOException{
-
-		Select select = new Select(dd);
-		if(dd.isDisplayed()){
-			select.selectByValue(value);
-			Update_Report("Pass", "DropDown", "selected dd object by using Value");
-		}
-		else{
-			Update_Report("Fail", "DropDown", "Not selected dd object by using Value");
-		}
-
-	}
-
-	/* 
-	 * Name of the Method: clickObj
-	 * Brief description : click object
-	 * Arguments: obj --> Webelement Object,  objName --> name of the object
-	 * Created by: Automation team
-	 * Creation date : July 17 2017
-	 * last modified: July 17 2017
-	 * 
-	 * */	
-	public static void clickObj(WebElement obj, String objName) throws IOException{
-		if(obj.isDisplayed()){
-			obj.click();
-			Update_Report("Pass", "click Action", "clicked on selected object");
-			System.out.println("Pass: "+ objName + " is clicked.");
-		}else{
-			Update_Report("Fail", "click Action", "Not clicked on selected object");
-		}
-	}
-
-	//Name of the method:ButtonClick
-	//Brief description:used to click the button
-	//arguments:obj->WebElement,objname->name of the object
-	//created by:Automation team
-	//creation date:12/15/2016
-	//modified date:12/15/2016
-	public static void ButtonClick(WebElement obj,String objname) throws IOException{
-		if(obj.isDisplayed())
-		{
-			obj.click();
-			Update_Report("Pass","ButtonClick",objname+" is clicked");
-		}
-		else{
-			Update_Report("Fail","ButtonClick",objname+" is not displayed");
-		}	
-		
-	}
-	
-
-	/* Name of the validateText
-		    Brief description:used to display message on matching actual text with expected text
-			arguments:obj->WebElement,Expectedtext->text used to compare with actual text,objname->name of the object,stepname->stepname
-			created by:Automation team
-			creation date:12/15/2016
-			modified date:12/15/2016 
+	/**
+	 * To select the drop down by value
+	 * @param dd: WebelEment drop down by value
+	 * @param index: Index of element to be selected
+	 * @throws IOException
 	 */
-	public static void validateText(WebElement obj,String expectedText,String objname,String stepname) throws IOException{
-		if(obj.isDisplayed())
-		{
-			String Actualtext=obj.getText().trim();
-			if(expectedText.trim().contains(Actualtext.trim())){
-				Update_Report("Pass",stepname,"Actual text matching with expected text");
-			}
-			else{
-				Update_Report("Fail",stepname,"Actual text not matching with expected text");
-			}
+	public static void dropDownByValue(WebElement dd1, String value) throws Exception{
+		Select select = new Select(dd1);
+		if(dd1.isDisplayed()){
+		select.selectByValue(value);
+		updateReport("Pass", "DropDown", "selected dd object by using value");
+		}
+	   else{
+		   updateReport("Fail", "DropDown", "Not selected dd object by using value");
+		   }
+		}
+
+
+	/**
+	 * Used to enter text into text box field
+	 * @param obj: WebElement object in which text needs to be entered
+	 * @param textVal: String value to be entered
+	 * @param objName: Name of object
+	 * @param stepName: Name of step
+	 * @throws IOException
+	 */
+	public static void enterText(WebElement obj, String textVal, String objName, String stepName) throws IOException{
+		if(obj.isDisplayed()){
+			obj.sendKeys(textVal);
+			updateReport("Pass", stepName ,textVal+" is entered in "+objName);
+
 		}
 		else{
-			Update_Report("Fail",stepname,objname+" is not displayed,please check your application");
-		}
-	}
-	/* 
-	 * Name of the Method: validateMsg
-	 * Brief description : validate message displayed on the web page
-	 * Arguments: obj --> Webelement Object,  expectedText --> expected text to be displayed, objName --> name of hte object
-	 * Created by: Automation team
-	 * Creation date : July 17 2017
-	 * last modified: July 17 2017
-	 * 
-	 * */	
-
-	/*public static void validateMsg(WebElement obj, String expectedText, String objName) throws IOException{
-		if(obj.isDisplayed()){
-			String actualText = obj.getText().trim();
-			if(expectedText.equals(actualText)){
-				Update_Report("Pass", "validate message", "Actual message is matching with expected message");
-			}else{
-				Update_Report("Fail", "validate message", "Actual message is matching with expected message");
-			}
-		}else{
-			Update_Report("Fail",objName," is not displayed, please check your application");
-		}
-	}*/
-	/* 
-	 * Name of the Method: validateText_Attribute
-	 * Brief description : validate message displayed on the web page
-	 * Arguments: obj --> Webelement Object,  expectedText --> expected text to be displayed, objName --> name of the object,stepname->stepname
-	 * Created by: Automation team
-	 * Creation date : July 20 2017
-	 * last modified: July 20 2017
-	 * 
-	 */	
-
-public static void validateText_Attribute(WebElement obj, String expectedText, String objName,String attributeName,String stepname) throws IOException{
-		if(obj.isDisplayed()){
-			String actualText = obj.getAttribute(attributeName);
-			if(expectedText.equals(actualText)){
-				Update_Report("Pass",stepname,"Actual text matching with expected text");
-			}else{
-				Update_Report("Fail",stepname,"Actual text not matching with expected text");
-			}
-		}else{
-			Update_Report("Fail",stepname,objName +"is not displayed, please check your application");
-		}
-	}
-	/*Name of the method:checkDisabled 
-		Brief description:check disabled object
-		arguments:obj->WebElement,objname->name of the object
-		created by:Automation team
-		creation date:07/24/2017
-		modified date:07/24/2017
-		*/
-	
-	public static void checkDisabled(WebElement obj,String objname) throws IOException{
-		if(obj.getAttribute("disabled").trim().contains("true")){Update_Report("Pass","Checkdisabled",objname+" is disabled");}
-		else{Update_Report("Fail","Checkdisabled",objname+" is not disabled");}
-	}
-
-	//Name of the method:Readingtext
-	//Brief description:Reading text box value
-	//arguments:obj->WebElement,objname->name of the object
-	//created by:Automation team
-	//creation date:07/24/2017
-	//modified date:07/24/2017
-	public static void ReadingText(WebElement obj,String objname) throws IOException{
-		if(obj.isDisplayed())
-		{
-			String Actualtext=obj.getText().trim();
-			if(Actualtext.isEmpty())
-			{
-				Update_Report("Fail","ReadingText",objname+" has No data");
-			}
-			else{
-				Update_Report("Pass","ReadingText",objname+" contains "+Actualtext);
-			}
+			updateReport("Fail", stepName ,objName+" field is not displayed,please check application");
 		}
 	}	
 
-	//Name of the method:readingCheckbox
-	//Brief description:Reading check box value
-	//arguments:obj->WebElement,objname->name of the object
-	//created by:Automation team
-	//creation date:07/24/2017
-	//modified date:07/24/2017
-	public static void readingCheckbox(WebElement obj,String Expectedtext,String objname) throws IOException{
+	/**
+	 * Used to display message on matching actual text with expected text
+	 * @param obj
+	 * @param Expectedtext
+	 * @param objname
+	 * @throws IOException
+	 */
+	public static void errorMessage(WebElement obj,String expectedText,String objname) throws IOException{
 		if(obj.isDisplayed())
 		{
-			String Actualtext=obj.getAttribute("checked").trim();
-			if(Expectedtext.equals(Actualtext)){
-				Update_Report("Pass","readingCheckbox",objname+" is checked");
+			String actualText=obj.getText().trim();
+			if(expectedText.trim().contains(actualText)){
+				updateReport("Pass","ErrorMessage","Actual message matching with expected message:"+actualText);
 			}
 			else{
-				Update_Report("Fail","readingCheckbox",objname+" is not checked");
+				updateReport("Fail","ErrorMessage","Actual message not matching with expected message:"+actualText);
 			}
 		}
 		else{
-			Update_Report("Fail","readingCheckbox",objname+" is not displayed,please check your application");
+			updateReport("Fail","ErrorMessage",objname+" is not displayed,please check your application");
 		}
 	}
-/*
-	 * Name of the Method: readSheet
-	 * Brief description : read excel sheet data
-	 * Arguments: datatable --> report path,sheetname:sheet name to access in the excel file
-	 * Created by: Automation team
-	 * Creation date : July 17 2017
-	 * last modified:  July 17 2017
-*/
 
-	public static String[][] readSheet(String dataTable, String sheetName) throws IOException{
+	/**
+	 * Read checkBox text
+	 * @param obj
+	 * @param Expectedtext
+	 * @param objname
+	 * @throws IOException
+	 */
+	public static void readingCheckbox(WebElement obj,String expectedText,String objname) throws IOException{
+		if(obj.isDisplayed()){
+			String actualText=obj.getAttribute("checked").trim();
+			if(expectedText.equals(actualText)){
+				updateReport("Pass","readingCheckbox",objname+" is checked");
+			}
+			else{
+				updateReport("Fail","readingCheckbox",objname+" is not checked");
+			}
+		}
+		else{
+			updateReport("Fail","readingCheckbox",objname+" is not displayed,please check your application");
+		}
+	}
 
+	/**
+	 * Read text box value
+	 * @param obj
+	 * @param objname
+	 * @throws IOException
+	 */
+	public static void readingText(WebElement obj,String objname) throws IOException{
+		if(obj.isDisplayed()){
+			String Actualtext=obj.getText().trim();
+			if(Actualtext.isEmpty()){
+				updateReport("Fail","ReadingText",objname+" has No data");
+			}
+			else{
+				updateReport("Pass","ReadingText",objname+" contains "+Actualtext);
+			}
+		}
+	}
+
+	/**
+	 * Read data from excel sheet
+	 * @param filePath
+	 * @param sheetName
+	 * @return
+	 * @throws IOException
+	 */
+	public static String[][] readSheet(String filePath, String sheetName) throws IOException{
 
 		/*Step 1: Get the XL Path*/
-		File xlFile = new File(dataTable);
+		File xlFile = new File(filePath);
 
 		/*Step2: Access the Xl File*/
 		FileInputStream xlDoc = new FileInputStream(xlFile);
 
 		/*Step3: Access the work book */
 		HSSFWorkbook wb = new HSSFWorkbook(xlDoc);
-
 
 		/*Step4: Access the Sheet */
 		HSSFSheet sheet = wb.getSheet(sheetName);
@@ -287,93 +238,110 @@ public static void validateText_Attribute(WebElement obj, String expectedText, S
 
 		for(int i =0; i<iRowCount;i++){
 			for(int j = 0; j <iColCount;j++){
-				xlData[i][j] = sheet.getRow(i).getCell(j).getStringCellValue().trim();
+				//sheet.getRow(i).getCell(j).getNumericCellValue()
+				Cell cell = sheet.getRow(i).getCell(j);
+				switch(cell.getCellType()){
+					case Cell.CELL_TYPE_STRING:
+						xlData[i][j] = sheet.getRow(i).getCell(j).getStringCellValue().trim();
+						break;
+					case Cell.CELL_TYPE_NUMERIC:
+						xlData[i][j] = new Double(sheet.getRow(i).getCell(j).getNumericCellValue()).toString() ;
+						break;
+				}
+				
+			}
+		}
+
+		//Close workbook
+		wb.close(); 
+		return xlData;
+	}	
+
+	/**
+	 * Start HTML report for the test script
+	 * @param scriptName
+	 * @param reportsPath
+	 * @param browser
+	 * @throws IOException
+	 */
+	public static void startReport(String scriptName, String reportsPath, String browser) throws IOException{
+
+		browserName = browser;
+		if(reportFlag == 0){
+			reportFlag = 1;
+			String strResultPath = null;
+			String testScriptName =scriptName;
+
+			Date cur_dt = new Date(); 
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+			String strTimeStamp = dateFormat.format(cur_dt);
+
+			if (reportsPath == "") { 
+				reportsPath = "C:\\";
 			}
 
-		}
+			if (!reportsPath.endsWith("\\")) { 
+				reportsPath = reportsPath + "\\";
+			}
 
-		return xlData;
+			strResultPath = reportsPath + "Log" + "/" +testScriptName +"/"; 
+			File f = new File(strResultPath);
+			f.mkdirs();
+			htmlname = strResultPath  + testScriptName + "_" + strTimeStamp 
+					+ ".html";
+
+			bw = new BufferedWriter(new FileWriter(htmlname));
+
+			bw.write("<HTML><BODY><TABLE BORDER=0 CELLPADDING=3 CELLSPACING=1 WIDTH=100%>");
+			bw.write("<TABLE BORDER=0 BGCOLOR=BLACK CELLPADDING=3 CELLSPACING=1 WIDTH=100%>");
+			bw.write("<TR><TD BGCOLOR=#66699 WIDTH=30%><FONT FACE=VERDANA COLOR=WHITE SIZE=2><B>Browser Name</B></FONT></TD><TD COLSPAN=6 BGCOLOR=#66699><FONT FACE=VERDANA COLOR=WHITE SIZE=2><B>"
+					+ browserName + "</B></FONT></TD></TR>");
+			bw.write("<HTML><BODY><TABLE BORDER=1 CELLPADDING=3 CELLSPACING=1 WIDTH=100%>");
+			bw.write("<TR COLS=7><TD BGCOLOR=#BDBDBD WIDTH=5%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><B>SL No</B></FONT></TD>"
+					+ "<TD BGCOLOR=#BDBDBD WIDTH=10%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><B>Step Name</B></FONT></TD>"
+					+ "<TD BGCOLOR=#BDBDBD WIDTH=10%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><B>Execution Time</B></FONT></TD> "
+					+ "<TD BGCOLOR=#BDBDBD WIDTH=10%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><B>Status</B></FONT></TD>"
+					+ "<TD BGCOLOR=#BDBDBD WIDTH=40%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><B>Detail Report</B></FONT></TD></TR>");
+		}
+		else{
+			bw.write("<TABLE BORDER=0 BGCOLOR=BLACK CELLPADDING=3 CELLSPACING=1 WIDTH=100%>");
+			bw.write("<TR><TD BGCOLOR=#66699 WIDTH=30%><FONT FACE=VERDANA COLOR=WHITE SIZE=2><B>Browser Name</B></FONT></TD><TD COLSPAN=6 BGCOLOR=#66699><FONT FACE=VERDANA COLOR=WHITE SIZE=2><B>"
+					+ browserName + "</B></FONT></TD></TR>");
+			bw.write("<HTML><BODY><TABLE BORDER=1 CELLPADDING=3 CELLSPACING=1 WIDTH=100%>");
+		}
 	}
-	/*
-	 * Name of the Method: startReport
-	 * Brief description : Creates HTML report template
-	 * Arguments: scriptname:test script name to run,ReportsPath:HTML report path to create,browserName:browser the script is running
-	 * Created by: Automation team
-	 * Creation date : July 17 2017
-	 * last modified:  July 17 2017
-*/
-	public static void startReport(String scriptName, String ReportsPath,String browserName) throws IOException{
-
-		String strResultPath = null;
-		String testScriptName =scriptName;
-
-		cur_dt = new Date(); 
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-		String strTimeStamp = dateFormat.format(cur_dt);
-
-		if (ReportsPath == "") { 
-
-			ReportsPath = "C:\\";
-		}
-
-		if (ReportsPath.endsWith("\\")) { 
-			ReportsPath = ReportsPath + "\\";
-		}
-
-		strResultPath = ReportsPath + "Log" + "/" +testScriptName +"/"; 
-		File f = new File(strResultPath);
-		f.mkdirs();
-		htmlname = strResultPath  + testScriptName + "_" + strTimeStamp 
-				+ ".html";
-
-		bw = new BufferedWriter(new FileWriter(htmlname));
-
-		bw.write("<HTML><BODY><TABLE BORDER=0 CELLPADDING=3 CELLSPACING=1 WIDTH=100%>");
-		bw.write("<TABLE BORDER=0 BGCOLOR=BLACK CELLPADDING=3 CELLSPACING=1 WIDTH=100%>");
-		bw.write("<TR><TD BGCOLOR=#66699 WIDTH=27%><FONT FACE=VERDANA COLOR=WHITE SIZE=2><B>Browser Name</B></FONT></TD><TD COLSPAN=6 BGCOLOR=#66699><FONT FACE=VERDANA COLOR=WHITE SIZE=2><B>"
-				+ browserName + "</B></FONT></TD></TR>");
-		bw.write("<HTML><BODY><TABLE BORDER=1 CELLPADDING=3 CELLSPACING=1 WIDTH=100%>");
-		bw.write("<TR COLS=7><TD BGCOLOR=#BDBDBD WIDTH=3%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><B>SL No</B></FONT></TD>"
-				+ "<TD BGCOLOR=#BDBDBD WIDTH=10%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><B>Step Name</B></FONT></TD>"
-				+ "<TD BGCOLOR=#BDBDBD WIDTH=10%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><B>Execution Time</B></FONT></TD> "
-				+ "<TD BGCOLOR=#BDBDBD WIDTH=10%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><B>Status</B></FONT></TD>"
-				+ "<TD BGCOLOR=#BDBDBD WIDTH=47%><FONT FACE=VERDANA COLOR=BLACK SIZE=2><B>Detail Report</B></FONT></TD></TR>");
-
-
-	}
-	/*
-	 * Name of the Method: Update_Report
-	 * Brief description : Updates HTML report with test results
-	 * Arguments: Res_type:holds the response of test script,Action:Action performed,result:contains test results
-	 * Created by: Automation team
-	 * Creation date : July 17 2017
-	 * last modified:  July 17 2017
-*/
-
-	public static void Update_Report(String Res_type,String Action, String result) throws IOException {
+	
+	/**
+	 * Update HTML report for each step
+	 * @param Res_type
+	 * @param Action
+	 * @param result
+	 * @throws IOException
+	 */
+	public static void updateReport(String resType,String action, String result) throws IOException {
 		String str_time;
 		Date exec_time = new Date();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 		str_time = dateFormat.format(exec_time);
-		if (Res_type.startsWith("Pass")) {
-			bw.write("<TR COLS=7><TD BGCOLOR=#EEEEEE WIDTH=3%><FONT FACE=VERDANA SIZE=2>"
-					+ (j++)
+		if (resType.startsWith("Pass")) {
+			bw.write("<TR COLS=7><TD BGCOLOR=#EEEEEE WIDTH=5%><FONT FACE=VERDANA SIZE=2>"
+					+ (rowCount++)
 					+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=VERDANA SIZE=2>"
-					+Action
+					+ action
 					+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=VERDANA SIZE=2>"
 					+ str_time
 					+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=VERDANA SIZE=2 COLOR = GREEN>"
 					+ "Passed"
-					+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=30%><FONT FACE=VERDANA SIZE=2 COLOR = GREEN>"
+					+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=40%><FONT FACE=VERDANA SIZE=2 COLOR = GREEN>"
 					+ result + "</FONT></TD></TR>");
 
-		} else if (Res_type.startsWith("Fail")) {
+		} else if (resType.startsWith("Fail")) {
 			exeStatus = "Failed";
 			report = 1;
-			bw.write("<TR COLS=7><TD BGCOLOR=#EEEEEE WIDTH=3%><FONT FACE=VERDANA SIZE=2>"
-					+ (j++)
+			bw.write("<TR COLS=7><TD BGCOLOR=#EEEEEE WIDTH=5%><FONT FACE=VERDANA SIZE=2>"
+					+ (rowCount++)
 					+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=VERDANA SIZE=2>"
-					+Action
+					+ action
 					+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=VERDANA SIZE=2>"
 					+ str_time
 					+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=10%><FONT FACE=VERDANA SIZE=2 COLOR = RED>"
@@ -381,10 +349,78 @@ public static void validateText_Attribute(WebElement obj, String expectedText, S
 					+ htmlname
 					+ "  style=\"color: #FF0000\"> Failed </a>"
 
-					+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=30%><FONT FACE=VERDANA SIZE=2 COLOR = RED>"
+					+ "</FONT></TD><TD BGCOLOR=#EEEEEE WIDTH=40%><FONT FACE=VERDANA SIZE=2 COLOR = RED>"
 					+ result + "</FONT></TD></TR>");
 
-
 		} 
+	}
+
+	/**
+	 * Validate if message is as expected
+	 * @param obj
+	 * @param expectedText
+	 * @param objName
+	 * @throws IOException
+	 */
+	/*public static void validateMsg(WebElement obj, String expectedText, String objName) throws IOException{
+		if(obj.isDisplayed()){
+			String actualText = obj.getText().trim();
+			if(expectedText.equals(actualText)){
+				updateReport("Pass", "validate message", "Actual message is matching with expected message");
+			}else{
+				updateReport("Fail", "validate message", "Actual message is matching with expected message");
+			}
+		}else{
+			updateReport("Fail",objName," is not displayed, please check your application");
+		}
+	}
+	*/
+
+	/**
+	 * To validate if the text on element matches expectedTest
+	 * @param obj: WebElement whose text needs to be verified
+	 * @param expectedText: Expected value of text
+	 * @param objName: Name of object
+	 * @param stepName: StepName
+	 * @throws IOException
+	 */
+	public static void validateText(WebElement obj,String expectedText,String objName,
+			String stepName) throws IOException{
+		if(obj.isDisplayed()){
+			String actualText=obj.getText().trim();
+			if(expectedText.trim().contains(actualText)){
+				updateReport("Pass",stepName,"Actual text matching with expected text");
+			}
+			else{
+				updateReport("Fail",stepName,"Actual text not matching with expected text");
+			}
+		}
+		else{
+			updateReport("Fail",stepName,objName+" is not displayed,please check your application");
+		}
+	}
+
+	/**
+	 * Validate message displayed on the web page
+	 * @param obj
+	 * @param expectedText
+	 * @param objName
+	 * @param attributeName
+	 * @param stepname
+	 * @throws IOException
+	 */
+	public static void validateTextAttribute(WebElement obj, String expectedText, String objName,
+			String attributeName,String stepName) throws IOException{
+		if(obj.isDisplayed()){
+			String actualText = obj.getAttribute(attributeName);
+			if(expectedText.equals(actualText)){
+				updateReport("Pass",stepName,"Actual text matching with expected text");
+			}else{
+				updateReport("Fail",stepName,"Actual text not matching with expected text");
+			}
+		}
+		else{
+			updateReport("Fail",stepName,objName +"is not displayed, please check your application");
+		}
 	}
 }

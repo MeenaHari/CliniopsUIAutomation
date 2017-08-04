@@ -1,9 +1,11 @@
 package com.testing.Cliniops;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -24,13 +26,16 @@ import org.testng.annotations.Test;
 
 public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest{
 
-WebDriver dr;  
+private static WebDriver dr;  
+public static WebDriver getInstance(){
+	return dr;}
     
 	
     @BeforeMethod    
 	@Parameters({"browser"})
 	public void selectBrowser(String browser){
 		if(browser.equalsIgnoreCase("firefox")){
+			dr=Cliniops_AutomationScriptsTest.getInstance();
 			dr=new FirefoxDriver();	
 			dr.manage().window().maximize();
 
@@ -63,25 +68,25 @@ WebDriver dr;
 			 		Thread.sleep(3000);			 		
 			 		tooltip.moveToElement(usrname).build().perform();			 		
 			 		expectedTooltipText="Enter Username";
-			 		validateMsg_Attribute(usrname, expectedTooltipText, "username tooltip", "title");
+			 		validateText_Attribute(usrname, expectedTooltipText, "username tooltip", "title","Tooltip");
 			 		
 			 		WebElement password=dr.findElement(By.id("password"));
 			 		Thread.sleep(3000);
 			 		tooltip.moveToElement(password).build().perform();
 			 		Thread.sleep(3000);			 		
 			 		expectedTooltipText="Enter Password";
-			 		validateMsg_Attribute(password, expectedTooltipText, "password tooltip", "title");
+			 		validateText_Attribute(password, expectedTooltipText, "password tooltip", "title","Tooltip");
 			 
 			 		WebElement authenticate=dr.findElement(By.id("Authenticate"));
 			 		Thread.sleep(3000);
 			 		tooltip.moveToElement(authenticate).build().perform();
 			 		Thread.sleep(3000);			 		
 			 		expectedTooltipText="Authenticate";
-			 		validateMsg_Attribute(authenticate, expectedTooltipText, "Authenticate tooltip", "title");
+			 		validateText_Attribute(authenticate, expectedTooltipText, "Authenticate tooltip", "title","Tooltip");
 
 			 		
-			 		usrname.sendKeys("Abhishek");
-					password.sendKeys("Welcome123#");
+			 		//usrname.sendKeys("Abhishek");
+					//password.sendKeys("Welcome123#");
 					authenticate.click();
 					
 					Thread.sleep(2000);		
@@ -91,7 +96,7 @@ WebDriver dr;
 					Thread.sleep(2000);
 					//actualTooltipText=selectStudy.getAttribute("title");
 					expectedTooltipText="Select Study";
-					validateMsg_Attribute(selectStudy, expectedTooltipText, "select Study tooltip", "title");
+					validateText_Attribute(selectStudy, expectedTooltipText, "select Study tooltip", "title","Tooltip");
 					//TooltipValidation(selectStudy, expectedTooltipText, actualTooltipText);
 			 		
 			 		WebElement selectLang=dr.findElement(By.id("lang_type"));
@@ -100,7 +105,7 @@ WebDriver dr;
 			 		tooltip.moveToElement(authenticate).build().perform();
 			 		Thread.sleep(3000); 				 		
 			 		expectedTooltipText="Select Language";
-			 		validateMsg_Attribute(selectLang, expectedTooltipText, "select Lang tooltip", "title");
+			 		validateText_Attribute(selectLang, expectedTooltipText, "select Lang tooltip", "title","Tooltip");
 			 
 			 		WebElement loginBtn=dr.findElement(By.xpath(".//*[@id='login']/div[7]/input"));
 			 		Thread.sleep(5000);
@@ -108,27 +113,73 @@ WebDriver dr;
 			 		tooltip.moveToElement(loginBtn).build().perform();
 			 		Thread.sleep(3000);			 		
 			 		expectedTooltipText="Login";
-			 		validateMsg_Attribute(loginBtn, expectedTooltipText, "login tooltip", "title");
+			 		validateText_Attribute(loginBtn, expectedTooltipText, "login tooltip", "title","Tooltip");
 			 		
 
 		 	}
+					
+		 
 		 @Test
-		 public void auto_clini_login_002() throws IOException{
-			 
-			 String expected = "Abhishek";
-			 dr.get("https://bridgetherapeutics.cliniops.com");
-			 WebElement userNameObj = dr.findElement(By.xpath(".//*[@id='username']"));
-			 enterText(userNameObj, "Abhishek", "userName object");
-			 String actual = userNameObj.getAttribute("value");
-			 validateMsg_Attribute(userNameObj, expected, "usernameObject", "value");
-			
-		 }
-		 @Test
-			public void auto_clini_login_004() throws IOException{
+			public void auto_clini_login_004() throws IOException, InterruptedException{
 				dr.get("https://bridgetherapeutics.cliniops.com/login");
-				WebElement selectstudy=dr.findElement(By.id("investigator_study"));
-				checkDisabled(selectstudy,"Select Study");			
+				WebElement forgotPwd=dr.findElement(By.linkText("Forgot password..? Click here..."));
+				 forgotPwd.click();
+				 Thread.sleep(3000);
+				 WebElement email=dr.findElement(By.id("forgotemail"));
+				 enterText(email, "abc@gmail.com", "Email id");
+				 Thread.sleep(3000);
+				 WebElement requestNewPwd=dr.findElement(By.id("req_new_pass"));
+				 ButtonClick(requestNewPwd, "Request new password");
+				 Thread.sleep(3000);
+				 WebElement emailIdError=dr.findElement(By.xpath("//*[text()='Email-id does not exist in database.']"));
+				 String errorMsg=emailIdError.getText();
+				 String actualErrorMsg="Email-id does not exist in database.";
+				 validateText(emailIdError, actualErrorMsg, errorMsg,"Email error");
+				 Thread.sleep(3000);
+				 WebElement email2=dr.findElement(By.id("forgotemail"));
+				 enterText(email2, "abhishekmj11@gmail.com", "Email id");
+				 Thread.sleep(3000);
+				 WebElement requestNewPwd2=dr.findElement(By.id("req_new_pass"));
+				 ButtonClick(requestNewPwd2, "Request new password");
+				 Thread.sleep(3000);
+				 WebElement emailIdError2=dr.findElement(By.xpath(".//*[@id='content-body']/div[1]/span"));
+				 String errorMsg2=emailIdError2.getText();
+				 String actualErrorMsg2="Email has been sent to your email address. Please check to create your new password.";
+				 validateText(emailIdError2, actualErrorMsg2, errorMsg2,"Email error");
 			}
+		 @Test
+
+
+
+		 public void auto_clini_login_005() throws Exception{
+
+			 dr.get("https://bridgetherapeutics.cliniops.com");
+
+			 WebElement rightFooter=dr.findElement(By.id("footer-right"));
+
+			 validateText(rightFooter, "Version : 2.0.27", "Right Footer:Version 2.0.27 ","Right Footer");
+
+			 WebElement logo=dr.findElement(By.xpath(".//*[@id='logo']/h1/a/img"));
+
+			 if(logo.isDisplayed()){
+
+				 Update_Report("Pass", "Presence of Logo", "Logo appears");
+
+			 }
+
+			 else{
+
+				 Update_Report("Pass", "Presence of Logo", "Logo not displayed");
+
+			 }
+
+		 }
+
+
+		
+				
+			
+		 	
 		 
 		@AfterMethod
 		

@@ -1,28 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results skipped="2" failed="0" total="2" passed="0">
+<testng-results skipped="0" failed="1" total="1" passed="0">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="49" started-at="2017-07-31T19:49:51Z" finished-at="2017-07-31T19:49:51Z">
+  <suite name="Default suite" duration-ms="47105" started-at="2017-08-08T06:55:44Z" finished-at="2017-08-08T06:56:31Z">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="49" started-at="2017-07-31T19:49:51Z" finished-at="2017-07-31T19:49:51Z">
-      <class name="com.testing.Cliniops.Cliniops_AutomationScriptsTest">
-        <test-method status="FAIL" signature="selectBrowser(java.lang.String)[pri:0, instance:com.testing.Cliniops.Cliniops_AutomationScriptsTest@be92ad]" name="selectBrowser" is-config="true" duration-ms="0" started-at="2017-07-31T12:49:51Z" finished-at="2017-07-31T12:49:51Z">
-          <exception class="org.testng.TestNGException">
+    <test name="Default test" duration-ms="47105" started-at="2017-08-08T06:55:44Z" finished-at="2017-08-08T06:56:31Z">
+      <class name="com.testing.Cliniops.Cliniops_DriverScriptTest">
+        <test-method status="FAIL" signature="cliniopsDriver()[pri:0, instance:com.testing.Cliniops.Cliniops_DriverScriptTest@7dc7cbad]" name="cliniopsDriver" duration-ms="47086" started-at="2017-08-07T23:55:44Z" finished-at="2017-08-07T23:56:31Z">
+          <exception class="java.lang.RuntimeException">
             <message>
-              <![CDATA[
-Parameter 'browser' is required by @Configuration on method selectBrowser but has not been marked @Optional or defined
-in C:\Users\Zunaira's\AppData\Local\Temp\testng-eclipse-959181937\testng-customsuite.xml]]>
+              <![CDATA[Process refused to die after 10 seconds, and couldn't taskkill it: Unable to find executable for: taskkill]]>
             </message>
             <full-stacktrace>
-              <![CDATA[org.testng.TestNGException: 
-Parameter 'browser' is required by @Configuration on method selectBrowser but has not been marked @Optional or defined
-in C:\Users\Zunaira's\AppData\Local\Temp\testng-eclipse-959181937\testng-customsuite.xml
-	at org.testng.internal.Parameters.createParameters(Parameters.java:154)
-	at org.testng.internal.Parameters.createParameters(Parameters.java:361)
-	at org.testng.internal.Parameters.createConfigurationParameters(Parameters.java:84)
-	at org.testng.internal.Invoker.invokeConfigurations(Invoker.java:197)
-	at org.testng.internal.Invoker.invokeMethod(Invoker.java:585)
+              <![CDATA[java.lang.RuntimeException: Process refused to die after 10 seconds, and couldn't taskkill it: Unable to find executable for: taskkill
+	at org.openqa.selenium.os.ProcessUtils.killWinProcess(ProcessUtils.java:143)
+	at org.openqa.selenium.os.ProcessUtils.killProcess(ProcessUtils.java:81)
+	at org.openqa.selenium.os.UnixProcess$SeleniumWatchDog.destroyHarder(UnixProcess.java:247)
+	at org.openqa.selenium.os.UnixProcess$SeleniumWatchDog.access$200(UnixProcess.java:201)
+	at org.openqa.selenium.os.UnixProcess.destroy(UnixProcess.java:125)
+	at org.openqa.selenium.os.CommandLine.destroy(CommandLine.java:155)
+	at org.openqa.selenium.firefox.FirefoxBinary.quit(FirefoxBinary.java:246)
+	at org.openqa.selenium.firefox.internal.NewProfileExtensionConnection.quit(NewProfileExtensionConnection.java:194)
+	at org.openqa.selenium.firefox.FirefoxDriver$LazyCommandExecutor.quit(FirefoxDriver.java:364)
+	at org.openqa.selenium.firefox.FirefoxDriver.stopClient(FirefoxDriver.java:310)
+	at org.openqa.selenium.remote.RemoteWebDriver.quit(RemoteWebDriver.java:529)
+	at com.testing.Cliniops.Cliniops_AutomationScriptsTest.closeBrowser(Cliniops_AutomationScriptsTest.java:331)
+	at com.testing.Cliniops.Cliniops_DriverScriptTest.cliniopsDriver(Cliniops_DriverScriptTest.java:39)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:85)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:639)
 	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:816)
 	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1124)
 	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:125)
@@ -38,36 +48,23 @@ in C:\Users\Zunaira's\AppData\Local\Temp\testng-eclipse-959181937\testng-customs
 	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1215)
 	at org.testng.TestNG.runSuitesLocally(TestNG.java:1140)
 	at org.testng.TestNG.run(TestNG.java:1048)
-	at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:132)
-	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:230)
-	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:76)
+	at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:126)
+	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:152)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:57)
+Caused by: java.lang.NullPointerException: Unable to find executable for: taskkill
+	at com.google.common.base.Preconditions.checkNotNull(Preconditions.java:251)
+	at org.openqa.selenium.os.UnixProcess.<init>(UnixProcess.java:62)
+	at org.openqa.selenium.os.CommandLine.<init>(CommandLine.java:38)
+	at org.openqa.selenium.os.WindowsUtils.killPID(WindowsUtils.java:178)
+	at org.openqa.selenium.os.ProcessUtils.killWinProcess(ProcessUtils.java:138)
+	... 36 more
 ]]>
             </full-stacktrace>
-          </exception> <!-- org.testng.TestNGException -->
+          </exception> <!-- java.lang.RuntimeException -->
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- selectBrowser -->
-        <test-method status="SKIP" signature="auto_clini_login_001()[pri:0, instance:com.testing.Cliniops.Cliniops_AutomationScriptsTest@be92ad]" name="auto_clini_login_001" duration-ms="10" started-at="2017-07-31T12:49:51Z" finished-at="2017-07-31T12:49:51Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- auto_clini_login_001 -->
-        <test-method status="SKIP" signature="closeBrowser()[pri:0, instance:com.testing.Cliniops.Cliniops_AutomationScriptsTest@be92ad]" name="closeBrowser" is-config="true" duration-ms="0" started-at="2017-07-31T12:49:51Z" finished-at="2017-07-31T12:49:51Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- closeBrowser -->
-        <test-method status="SKIP" signature="selectBrowser(java.lang.String)[pri:0, instance:com.testing.Cliniops.Cliniops_AutomationScriptsTest@be92ad]" name="selectBrowser" is-config="true" duration-ms="0" started-at="2017-07-31T12:49:51Z" finished-at="2017-07-31T12:49:51Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- selectBrowser -->
-        <test-method status="SKIP" signature="auto_clini_login_005()[pri:0, instance:com.testing.Cliniops.Cliniops_AutomationScriptsTest@be92ad]" name="auto_clini_login_005" duration-ms="1" started-at="2017-07-31T12:49:51Z" finished-at="2017-07-31T12:49:51Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- auto_clini_login_005 -->
-        <test-method status="SKIP" signature="closeBrowser()[pri:0, instance:com.testing.Cliniops.Cliniops_AutomationScriptsTest@be92ad]" name="closeBrowser" is-config="true" duration-ms="0" started-at="2017-07-31T12:49:51Z" finished-at="2017-07-31T12:49:51Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- closeBrowser -->
-      </class> <!-- com.testing.Cliniops.Cliniops_AutomationScriptsTest -->
+        </test-method> <!-- cliniopsDriver -->
+      </class> <!-- com.testing.Cliniops.Cliniops_DriverScriptTest -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

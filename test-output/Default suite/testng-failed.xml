@@ -3,12 +3,11 @@
 <suite guice-stage="DEVELOPMENT" name="Failed suite [Default suite]">
   <test name="Default test(failed)">
     <classes>
-      <class name="com.testing.Cliniops.Cliniops_AutomationScriptsTest">
+      <class name="com.testing.Cliniops.Cliniops_DriverScriptTest">
         <methods>
-          <include name="auto_clini_login_005"/>
-          <include name="auto_clini_login_001"/>
+          <include name="cliniopsDriver"/>
         </methods>
-      </class> <!-- com.testing.Cliniops.Cliniops_AutomationScriptsTest -->
+      </class> <!-- com.testing.Cliniops.Cliniops_DriverScriptTest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

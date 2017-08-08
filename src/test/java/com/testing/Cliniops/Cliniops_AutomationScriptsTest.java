@@ -26,7 +26,8 @@ import org.testng.annotations.Test;
 
 public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest{
 
-	WebDriver dr;  
+	WebDriver dr;
+	private Object Lastboarder;  
 
 
 	@BeforeMethod    
@@ -117,6 +118,7 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 		Thread.sleep(3000);
 		
 		clickElement(selectLang, "selectLang","selectLang",dr);
+		Thread.sleep(3000);
 		WebElement selectLanguageOption=dr.findElement(By.xpath(".//*[@id='lang_type']/option[2]"));
 	    checkObjectDisplay(selectLanguageOption,"selectLanguageOption","selectLanguageOption",dr);
 		//String expectedLanguage="English";
@@ -258,7 +260,7 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 		WebElement emailIdError = (new WebDriverWait(dr, 5))
 				.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[text()='Email-id does not exist in database.']")));
 		errorMsg=emailIdError.getText();
-		expectedErrorMsg="Email-id does not exist in database.";
+		expectedErrorMsg="Email-id does not exist in database123.";
 		validateText(emailIdError, expectedErrorMsg, errorMsg,"Email error",dr);
 		//Thread.sleep(3000);
 
@@ -330,7 +332,23 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 		String expectedVisitsCount="5";
 		validateText(visitsCount, expectedVisitsCount, "Visits count","Visits",dr);
 	}
-
+	@Test
+	public void auto_Clini_Confg_001() throws InterruptedException, IOException{
+		final String SCRIPT_GET_ELEMENT_BORDER = null;
+		Login(dr);
+		Thread.sleep(2000);
+		WebElement config=dr.findElement(By.xpath(".//*[text()='Configure']"));
+	    Actions action=new Actions(dr);
+	    action.moveToElement(config).build().perform();
+		String expectedTextColor="rgba(255, 255, 255, 1)";
+		String ActualTextColor = dr.findElement(By.xpath(".//*[text()='Configure']")).getCssValue("color");
+		checkContentsMatch(expectedTextColor,ActualTextColor,"Configure tab highlight",dr);
+		clickElement(config, "Configure tab", "Configure tab",dr);
+		String ExpectedURL="https://bridgetherapeutics.cliniops.com/investigator/configurestudy/general";
+		String ActualURL=dr.getCurrentUrl();
+		validateURL(ExpectedURL,ActualURL,"Configure URL Check",dr);
+		
+	}
 
 	@AfterMethod
 

@@ -132,6 +132,15 @@ public class Cliniops_ReusableMethodsTest {
 			Update_Report("Fail",stepName,objName+ " is not displayed, please check your application",dr);
 		}
 	}
+	public static void checkContentsMatch(String expectedText,String actualText,String stepName,WebDriver dr) throws IOException
+	{
+	if(expectedText.trim().equals(actualText.trim())){
+		Update_Report("Pass", stepName, "Text highlighted",dr);
+	}else{
+		Update_Report("Fail", stepName, "Text not highlighted",dr);
+	}
+		
+	}
 	
 	
 	/* 
@@ -165,10 +174,10 @@ public class Cliniops_ReusableMethodsTest {
 			//modified date:08/04/2017
 	public static void validateURL(String expectedURL,String ActualURL,String stepName,WebDriver dr) throws IOException{
 		if(expectedURL.trim().equals(ActualURL.trim())){
-			Update_Report("Pass","stepName","Actual URL matching with expected URL",dr);
+			Update_Report("Pass",stepName,"Actual URL matching with expected URL",dr);
 		}
 		else{
-			Update_Report("Fail","stepName","Actual URL matching with expected URL",dr);
+			Update_Report("Fail",stepName,"Actual URL matching with expected URL",dr);
 		}
 	
 	}

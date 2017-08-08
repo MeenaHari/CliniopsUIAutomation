@@ -5,7 +5,7 @@
     <classes>
       <class name="com.testing.Cliniops.Cliniops_DriverScriptTest">
         <methods>
-          <include name="cliniops_driver"/>
+          <include name="cliniopsDriver"/>
         </methods>
       </class> <!-- com.testing.Cliniops.Cliniops_DriverScriptTest -->
     </classes>

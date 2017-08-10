@@ -1,6 +1,7 @@
 package com.testing.Cliniops;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -322,7 +323,135 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
     	String expectedVisitsCount="5";
     	validateText(visitsCount, expectedVisitsCount, "Visits count","Visits",dr);
     }
+    
+    public void auto_Clini_Home_002() throws InterruptedException, IOException{
+		//Login to the application
+		login(dr);
+		Thread.sleep(2000);
 
+		//Create action object
+		Actions action = new Actions(dr);
+
+		//Locate the 4 graphs
+		List<WebElement> graphs = dr.findElements(By.cssSelector("div.graph-container>div[class*='graph']"));
+		ArrayList<String> contId = new ArrayList<String>();
+		System.out.println("check1....");
+
+		//Locate the 4 containers to get their ids
+		List<WebElement> containers = dr.findElements(By.cssSelector("div[id*='container']"));
+		for(int i=0; i< containers.size(); i++){
+			System.out.println("check2....");
+			WebElement container = containers.get(i);
+			String id = container.getAttribute("id");
+			contId.add(id);
+		}
+
+		//Graph titles
+		String[] expectedGraphText = {
+			"Subjects Enrollment", 
+			"Visits",
+			"Site Enrollment", 
+			"Group Enrollment"
+		};
+		//Expected result for chart menu options
+		String[] expMenuOption = {
+			"Print chart",
+			"Download PNG image",
+			"Download JPEG image",
+			"Download PDF document",
+			"Download SVG vector image"
+		};
+
+		String locator = "div[id=";
+		//Navigate through the list elements 
+		for(int i=0; i< graphs.size(); i++){
+			System.out.println("check3....");
+			//Get the chart object
+			WebElement chartObj = graphs.get(i);
+			//Scroll if required
+			action.moveToElement(chartObj).build().perform();
+
+			//Get Chart title and validate if it is as per expected??
+			String title = chartObj.getText().split("\n")[0];
+			validateText(title, expectedGraphText[i], "Graph","Verify Graph Title",dr);
+			System.out.println("Graph title = " + title);
+			
+			//Get the context menu rectangle "≡" and click on the button so pop up options are enabled
+			String menuLocator = locator + contId.get(i) + "]>div>svg>g.highcharts-button>rect";
+			WebElement chartMenu = dr.findElement(By.cssSelector(menuLocator));
+			Thread.sleep(4000);
+			System.out.println("check4....");
+			action.moveToElement(chartMenu).build().perform();
+			Thread.sleep(4000);
+			System.out.println("check5....");
+			action.click().build().perform();
+			Thread.sleep(5000);
+				
+			String popUpLocator = locator + contId.get(i) + "]>div>div.highcharts-contextmenu>div>div";
+			System.out.println("check6....");
+			List<WebElement> popUpOptions = dr.findElements(By.cssSelector(popUpLocator));
+
+			System.out.println("No. of Pop Up Window Options = " + popUpOptions.size()) ;
+			System.out.println("check7....");
+			//Find the pop up window and navigate to validate the 5 options
+			for(int j=0; j< popUpOptions.size(); j++){
+				WebElement opt = popUpOptions.get(j);
+				Thread.sleep(1000);
+				action.moveToElement(opt);
+				String optText = opt.getText();
+				System.out.println("Option text == " + optText);
+				String stepName = "Verify Download Link";
+				validateText(optText, expMenuOption[j], "Chart Context Menu",stepName,dr);
+			}
+		}
+	}
+
+    public void auto_Clini_Config_004() throws InterruptedException, IOException
+    {
+    	login(dr);
+    	Thread.sleep(3000);
+    	WebElement configure_tab = dr.findElement(By.xpath(".//*[@id='nav']//li[2]"));
+    	clickElement(configure_tab, "configureTab", "click configureTab", dr);
+    	Thread.sleep(4000);
+    	
+    	//validate text present in the target enrollment textbox
+    	String expected = "300";
+    	String actual = dr.findElement(By.xpath(".//*[@id='targetenrollment']")).getAttribute("value");
+    	System.out.println(actual);
+    	validateText(actual, expected, "targetEnrollment", "TargetEnroll textbox", dr);
+    	
+    	//varify value(custom) visibility in subjectID dropdown 
+    	String expSubjectId = "Custom";
+    	//WebElement subjectID_obj = dr.findElement(By.cssSelector("#subjectId"));
+    	List<WebElement> subjectID_options = dr.findElements(By.xpath(".//*[@id='subjectId']"));
+    	//System.out.println(subjectID_options.size());
+    	System.out.println(subjectID_options.get(0).getText());
+    	String actual_subjectID_option = subjectID_options.get(0).getText().substring(23);
+    	if(subjectID_options.get(0).getText().contains(expSubjectId))
+    	{
+    		validateText(actual_subjectID_option, expSubjectId,"subjectID","SubjectID dropdown option", dr);
+    		System.out.println("Custom value is present in subjectID dropdown options....");
+    	}
+
+    	//verify data change options present in textboxes
+    	String expReasonForDataChange1 = "Invalid entry";
+    	String expReasonForDataChange2 = "Updated Information";
+    	List<WebElement> reasonForDataChangeOptions = dr.findElements(By.xpath(".//*[@id='reasonForDataChange']"));
+    	String actual1 = reasonForDataChangeOptions.get(0).getAttribute("value");
+    	validateText(actual1, expReasonForDataChange1, "reasonForDataChange", "dataChange Options", dr);
+    	
+    	String actual2 = reasonForDataChangeOptions.get(1).getAttribute("value");
+    	validateText(actual2, expReasonForDataChange2, "reasonForDataChange", "dataChange Options", dr);
+    	
+    	//verify file visibility of  informed consent form
+    	String expFileName = "ICF - Interview...cians_v8.pdf";
+    	String actualFileName = dr.findElement(By.xpath(".//*[@id='study_general_settings']/div[2]/div[1]/fieldset[2]/div/span")).getText();
+    	System.out.println(actualFileName);
+    	validateText(actualFileName, expFileName, "dataChange", "fileNameCheck", dr);
+    	
+    	
+    }
+    
 
     @AfterMethod
 

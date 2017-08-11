@@ -1,6 +1,7 @@
 package com.testing.Cliniops;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -33,6 +34,8 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 	public void selectBrowser(String browser)throws IOException{
 	    if(browser.equalsIgnoreCase("firefox")){
 			dr=new FirefoxDriver();	
+			dr.manage().window().maximize();
+			
 		}
 		else if(browser.equalsIgnoreCase("chrome")){
 			dr=new ChromeDriver();
@@ -236,7 +239,7 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 
     }
 
-    @Test(enabled=false)
+    @Test
     public void auto_Clini_Login_004() throws IOException{
     	String errorMsg;
     	String expectedErrorMsg;
@@ -252,10 +255,10 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
     	clickElement(requestNewPwd, "Click Request Password", "Request new password",dr);
 
     	WebElement emailIdError = (new WebDriverWait(dr, 5))
-    			.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[text()='Email-id does not exist in database.']")));
-    	errorMsg=emailIdError.getText();
-    	expectedErrorMsg="Email-id does not exist in database.";
-    	validateText(emailIdError, expectedErrorMsg, errorMsg,"Email error",dr);
+    			.until(ExpectedConditions.presenceOfElementLocated(By.xpath(".//*[@id='content-body']/div[1]/span")));
+    	//errorMsg=emailIdError.getText();
+    	expectedErrorMsg="Email-id or username does not exist in database.";
+    	validateText(emailIdError, expectedErrorMsg, "Email error","Email error",dr);
 
     	WebElement email2=dr.findElement(By.id("forgotemail"));
     	enterText(email2, "abhishekmj11@gmail.com", "Email id", "Enter Email",dr);
@@ -322,8 +325,269 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
     	String expectedVisitsCount="5";
     	validateText(visitsCount, expectedVisitsCount, "Visits count","Visits",dr);
     }
+	@Test
+	public void auto_Clini_Home_002() throws InterruptedException, IOException {
+		
+		login(dr);
+		
+			Thread.sleep(2000);
 
+			//Create action object
+			Actions action = new Actions(dr);
 
+			//Locate the 4 graphs
+			List<WebElement> graphs = dr.findElements(By.cssSelector("div.graph-container>div[class*='graph']"));
+			ArrayList<String> contId = new ArrayList<String>();
+
+			//Locate the 4 containers to get their ids
+			List<WebElement> containers = dr.findElements(By.cssSelector("div[id*='container']"));
+			for(int i=0; i< containers.size(); i++){
+				WebElement container = containers.get(i);
+				String id = container.getAttribute("id");
+				contId.add(id);
+			}
+
+			//Graph titles
+			String[] expectedGraphText = {
+				"Subjects Enrollment",
+				"Visits",
+				"Site Enrollment",
+				"Group Enrollment"
+			};
+			//Expected result for chart menu options
+			String[] expMenuOption = {
+				"Print chart",
+				"Download PNG image",
+				"Download JPEG image",
+				"Download PDF document",
+				"Download SVG vector image"
+			};
+
+			String locator = "div[id=";
+			//Navigate through the list elements 
+			for(int i=0; i< graphs.size(); i++){
+				WebElement chartObj = graphs.get(i);
+				action.moveToElement(chartObj).build().perform();
+
+				//Get Chart title and validate if it is as per expected??
+				String title = chartObj.getText().split("\n")[0];
+				checkContentsMatch(title, expectedGraphText[i], "Graph","Verify Graph Title",dr);
+				System.out.println("Graph title = " + title);
+				
+				//Get the context menu rectangle "≡" and click on the button so pop up options are enabled
+				String menuLocator = locator + contId.get(i) + "]>div>svg>g.highcharts-button>rect";
+				WebElement chartMenu = dr.findElement(By.cssSelector(menuLocator));
+				Thread.sleep(1000);
+				action.moveToElement(chartMenu).build().perform();
+				Thread.sleep(2000);
+				
+				//chartMenu.click();
+				String ExpectedBrowser="org.openqa.selenium.firefox.FirefoxDriver";
+				String ActualBrowser=dr.getClass().getName();
+				System.out.println(ActualBrowser);
+				if(ActualBrowser.equals(ExpectedBrowser)){chartMenu.click();}
+				else{action.click().build().perform();}
+				Thread.sleep(1000);
+					
+				String popUpLocator = locator + contId.get(i) + "]>div>div.highcharts-contextmenu>div>div";
+
+				List<WebElement> popUpOptions = dr.findElements(By.cssSelector(popUpLocator));
+
+				System.out.println("No. of Pop Up Window Options = " + popUpOptions.size()) ;
+				//Find the pop up window and navigate to validate the 5 options
+				for(int j=0; j< popUpOptions.size(); j++){
+					WebElement opt = popUpOptions.get(j);
+					Thread.sleep(1000);
+					action.moveToElement(opt);
+					String optText = opt.getText();
+					System.out.println("Option text == " + optText);
+					String stepName = "Verify Download Link";
+					checkContentsMatch(optText, expMenuOption[j], "Chart Context Menu",stepName,dr);
+				}
+			}
+		}
+@Test   
+
+    public void auto_Clini_Home_003() throws Exception{
+    	login(dr);
+    	Thread.sleep(2000);
+    	//Configure Tab
+    	WebElement configure= dr.findElement(By.xpath("//*[contains(text(),'Configure')]"));
+    	clickElement(configure, "Configure", "Configure Tab details", dr);
+    	String expectedConfigUrl="https://bridgetherapeutics.cliniops.com/investigator/configurestudy/general";
+    	String actualConfigUrl=dr.getCurrentUrl();
+    	validateURL(expectedConfigUrl,actualConfigUrl,"Configure URL Check",dr);
+    	Actions action=new Actions(dr);
+    	action.moveToElement(dr.findElement(By.xpath("//*[contains(text(),'Configure')]"))).build().perform();
+    	Thread.sleep(3000);
+        String expectedTextColor11="rgba(255, 255, 255, 1)";
+    	String actualTextColor11 = dr.findElement(By.xpath("//*[contains(text(),'Configure')]")).getCssValue("color");
+    	checkHighlightText(expectedTextColor11,actualTextColor11,"Configure tab highlight",dr);
+        WebElement studyDetails=dr.findElement(By.xpath(".//*[@id='content-body']/div[1]/div/div[2]/div[1]/ul/li[1]/a"));
+        action.moveToElement(studyDetails).build().perform();
+    	Thread.sleep(3000);
+        String expectedTextColor12="rgba(255, 255, 255, 1)";
+    	String actualTextColor12 = studyDetails.getCssValue("color");
+    	checkHighlightText(expectedTextColor12,actualTextColor12,"Study Details highlight",dr);
+    	WebElement studyDetailsPage= dr.findElement(By.xpath("//div[@id='content-body']/div/div/h3"));
+    	String actualText=studyDetailsPage.getText().substring(0, 13);
+    	String expectedText="Study Details";
+    	checkContentsMatch(actualText,expectedText,"Study Details","Configure Study Details",dr); 
+    	Thread.sleep(3000);
+    	//Manage Tab
+    	WebElement manage= dr.findElement(By.xpath("//a[contains(text(),'Manage')]"));
+    	clickElement(manage, "Manage Tab", "Manage Tab details", dr);
+    	String expectedManageUrl="https://bridgetherapeutics.cliniops.com/investigator/managestudy/roles";
+    	String actualManageUrl=dr.getCurrentUrl();
+    	validateURL(expectedManageUrl,actualManageUrl,"Manage URL Check",dr);
+    	action.moveToElement(dr.findElement(By.xpath("//a[contains(text(),'Manage')]"))).build().perform();
+    	Thread.sleep(3000);
+        String expectedTextColor21="rgba(255, 255, 255, 1)";
+    	String actualTextColor21 = dr.findElement(By.xpath("//a[contains(text(),'Manage')]")).getCssValue("color");
+    	checkHighlightText(expectedTextColor21,actualTextColor21,"Manage tab highlight",dr);
+        WebElement roles=dr.findElement(By.xpath(".//*[@id='content-body']/div/div/div[2]/div[1]/ul/li[1]/a"));
+        action.moveToElement(roles).build().perform();
+    	Thread.sleep(3000);
+        String expectedTextColor22="rgba(255, 255, 255, 1)";
+    	String actualTextColor22 = roles.getCssValue("color");
+    	checkHighlightText(expectedTextColor22,actualTextColor22,"Roles highlight",dr);
+    	WebElement studyUserRoles= dr.findElement(By.xpath("//div[@id='content-body']/div/div/h3"));
+    	String actualText2=studyUserRoles.getText().substring(0, 16);
+    	String expectedText2="Study User Roles";
+    	checkContentsMatch(actualText2,expectedText2,"Study User Roles","Study User Roles",dr); 
+    	Thread.sleep(3000);
+    	
+       	//Analyze Tab
+    	WebElement analyze= dr.findElement(By.xpath("//*[contains(text(),'Analyze')]"));
+    	clickElement(analyze, "Analyze Tab", "Analyze Tab details", dr);
+    	String expectedAnalyzeUrl="https://bridgetherapeutics.cliniops.com/investigator/analyzestudy";
+    	String actualAnalyzeUrl=dr.getCurrentUrl();
+    	validateURL(expectedAnalyzeUrl,actualAnalyzeUrl,"Analyze URL Check",dr);
+    	action.moveToElement(dr.findElement(By.xpath("//*[contains(text(),'Analyze')]"))).build().perform();
+    	Thread.sleep(3000);
+        String expectedTextColor31="rgba(255, 255, 255, 1)";
+    	String actualTextColor31 = dr.findElement(By.xpath("//*[contains(text(),'Analyze')]")).getCssValue("color");
+    	checkHighlightText(expectedTextColor31,actualTextColor31,"Manage tab highlight",dr);
+    	WebElement export=dr.findElement(By.xpath(".//*[@id='content-body']/div/div[1]/div[2]/ul/li[1]/a"));
+        action.moveToElement(export).build().perform();
+    	Thread.sleep(3000);
+        String expectedTextColor32="rgba(255, 255, 255, 1)";
+    	String actualTextColor32 = export.getCssValue("color");
+    	checkHighlightText(expectedTextColor32,actualTextColor32,"Export highlight",dr);    	
+    	WebElement studyAnalysis = dr.findElement(By.xpath("//div[@id='content-body']/div/div/h3"));
+    	String actualText3=studyAnalysis.getText().substring(0, 14);
+    	String expectedText3="Study Analysis";
+    	checkContentsMatch(actualText3,expectedText3,"Study Analysis","Study Analysis",dr); 
+    	Thread.sleep(3000);
+    	//Subjects Tab
+    	WebElement subjects= dr.findElement(By.xpath("//*[contains(text(),'Subjects')]"));
+    	clickElement(subjects, "Subjects Tab", "Subjects Tab details", dr);
+    	String expectedSubjectsUrl="https://bridgetherapeutics.cliniops.com/investigator/viewsubjects";
+    	String actualSubjectsUrl=dr.getCurrentUrl();
+    	validateURL(expectedSubjectsUrl,actualSubjectsUrl,"Subjects URL Check",dr);
+    	action.moveToElement(dr.findElement(By.xpath("//*[contains(text(),'Subjects')]"))).build().perform();
+    	Thread.sleep(3000);
+        String expectedTextColor41="rgba(255, 255, 255, 1)";
+    	String actualTextColor41 = dr.findElement(By.xpath(".//*[@id='nav']/ul/li[5]/a")).getCssValue("color");
+    	checkHighlightText(expectedTextColor41,actualTextColor41,"Subjects tab highlight",dr);      	  	
+    	WebElement subjectSummary = dr.findElement(By.xpath(".//*[@id='content-body']/div/div[2]/div[1]/h3"));
+    	String actualText41=subjectSummary.getText();
+    	String expectedText41="Subject Summary";
+    	checkContentsMatch(actualText41,expectedText41,"Subject Summary","Subject Summary",dr); 
+    	Thread.sleep(3000);
+    	WebElement subjectData = dr.findElement(By.xpath(".//*[@id='content-body']/div/div[2]/div[2]/h3"));
+    	String actualText42=subjectData.getText();
+    	String expectedText42="Subject Data";
+    	checkContentsMatch(actualText42,expectedText42,"Subject Data","Subject Data",dr); 
+    	//Audit
+       	WebElement audit= dr.findElement(By.xpath("//*[contains(text(),'Audit')]"));
+    	clickElement(audit, "Audit Tab", "Audit Tab details", dr);
+    	String expectedAuditUrl="https://bridgetherapeutics.cliniops.com/investigator/audittrial";
+    	String actualAuditUrl=dr.getCurrentUrl();
+    	validateURL(expectedAuditUrl,actualAuditUrl,"Audit URL Check",dr);
+    	action.moveToElement(dr.findElement(By.xpath("//*[contains(text(),'Audit')]"))).build().perform();
+    	Thread.sleep(3000);
+        String expectedTextColor51="rgba(255, 255, 255, 1)";
+    	String actualTextColor51 = dr.findElement(By.xpath("//*[contains(text(),'Audit')]")).getCssValue("color");
+    	checkHighlightText(expectedTextColor51,actualTextColor51,"Audit tab highlight",dr);     
+    	WebElement auditTrail = dr.findElement(By.xpath(".//*[text()='Audit Trail']"));
+    	String actualText5=auditTrail.getText();
+    	String expectedText5="Audit Trail";
+    	checkContentsMatch(actualText5,expectedText5,"Audit Trail","Audit Trail",dr); 
+      	//Profile Tab
+    	WebElement profile= dr.findElement(By.xpath("//*[contains(text(),'Profile')]"));
+    	clickElement(profile, "Profile Tab", "Profile Tab details", dr);    	
+    	String expectedProfileUrl="https://bridgetherapeutics.cliniops.com/investigator/profile";
+    	String actualProfileUrl=dr.getCurrentUrl();
+    	validateURL(expectedProfileUrl,actualProfileUrl,"Profile URL Check",dr);
+    	action.moveToElement(dr.findElement(By.xpath("//*[contains(text(),'Profile')]"))).build().perform();
+    	Thread.sleep(3000);
+        String expectedTextColor61="rgba(255, 255, 255, 1)";
+    	String actualTextColor61 = dr.findElement(By.xpath(".//*[text()='Profile']")).getCssValue("color");
+    	checkHighlightText(expectedTextColor61,actualTextColor61,"Profile tab highlight",dr);  
+    	WebElement profileInformation = dr.findElement(By.xpath(".//*[@id='content-body']/div[2]/div/h3"));
+    	String actualText6=profileInformation.getText();
+    	String expectedText6="Profile Information";
+    	checkContentsMatch(actualText6,expectedText6,"Profile Information","Profile Information",dr); 
+    }
+@Test
+public void auto_Clini_Confg_001() throws InterruptedException, IOException{
+	login(dr);
+	Thread.sleep(2000);
+	WebElement config=dr.findElement(By.xpath(".//*[text()='Configure']"));
+    Actions action=new Actions(dr);
+    action.moveToElement(config).build().perform();
+    Thread.sleep(3000);
+	String expectedTextColor="rgba(255, 255, 255, 1)";
+	String ActualTextColor = dr.findElement(By.xpath(".//*[text()='Configure']")).getCssValue("color");
+	Thread.sleep(2000);
+	checkHighlightText(expectedTextColor,ActualTextColor,"Configure tab highlight",dr);
+	clickElement(config, "Configure tab", "Configure tab",dr);
+	String ExpectedURL="https://bridgetherapeutics.cliniops.com/investigator/configurestudy/general";
+	String ActualURL=dr.getCurrentUrl();
+	validateURL(ExpectedURL,ActualURL,"Configure URL Check",dr);
+	
+}
+@Test
+public void auto_Clini_Confg_004() throws InterruptedException, IOException
+
+{	login(dr);
+	Thread.sleep(3000);
+	WebElement configure_tab = dr.findElement(By.xpath(".//*[@id='nav']//li[2]"));
+	clickElement(configure_tab, "configureTab", "click configureTab", dr);
+	Thread.sleep(4000);
+	//validate text present in the target enrollment textbox
+	String expected = "300";
+	String actual = dr.findElement(By.xpath(".//*[@id='targetenrollment']")).getAttribute("value");
+	System.out.println(actual);
+	checkContentsMatch(actual, expected, "targetEnrollment", "Target Enrollment Value", dr);
+	//verify value(custom) visibility in subjectID dropdown 
+	String expSubjectId = "Custom";
+	Thread.sleep(3000);
+	String actual_subjectID_option=dr.findElement(By.xpath("//option[@value='Custom']")).getText();
+	if(actual_subjectID_option.equals(expSubjectId))
+	{checkContentsMatch(actual_subjectID_option, expSubjectId,"subjectID","SubjectID dropdown option", dr);
+	System.out.println("Custom value is present in subjectID dropdown options");
+	}
+   	//verify data change options present in textboxes
+	String expReasonForDataChange1 = "Invalid entry";
+	String expReasonForDataChange2 = "Updated Information";
+	List<WebElement> reasonForDataChangeOptions = dr.findElements(By.xpath(".//*[@id='reasonForDataChange']"));
+	String actual1 = reasonForDataChangeOptions.get(0).getAttribute("value");
+	checkContentsMatch(actual1, expReasonForDataChange1, "reasonForDataChange", "Reason for Data Change:Value1", dr);
+	String actual2 = reasonForDataChangeOptions.get(1).getAttribute("value");
+	checkContentsMatch(actual2, expReasonForDataChange2, "reasonForDataChange", "Reason for Data Change:Value2", dr);	
+	//verify file visibility of  informed consent form
+	String expFileName = "ICF - Interview...cians_v8.pdf";
+	String actualFileName = dr.findElement(By.xpath(".//*[@id='study_general_settings']/div[2]/div[1]/fieldset[2]/div/span")).getText();
+	System.out.println(actualFileName);
+	checkContentsMatch(actualFileName, expFileName, "dataChange", "Choose FileName Check", dr);
+
+	
+
+	
+
+}
     @AfterMethod
 
     public void closeBrowser(){

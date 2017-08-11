@@ -32,6 +32,40 @@ public class Cliniops_ReusableMethodsTest {
 	private static String browserName=null;
 	private static int reportFlag=0;
 	static String strTime;
+	/**
+	 * 
+	 * @param expectedTextColor
+	 * @param actualTextColor
+	 * @param stepName
+	 * @param dr
+	 * @throws IOException
+	 * */
+	
+	public static void checkHighlightText(String expectedTextColor,String actualTextColor,String stepName,WebDriver dr) throws IOException
+	{if(expectedTextColor.trim().equals(actualTextColor.trim())){
+		updateReport("Pass",stepName, "Text highlighted",dr);
+	}else{
+		updateReport("Fail",stepName, "Text not highlighted",dr);
+	}
+		
+	}
+	/**
+	 * 
+	 * @param actualText
+	 * @param expectedText
+	 * @param objName
+	 * @param stepName
+	 * @param dr
+	 * @throws IOException
+	 */
+	public static void checkContentsMatch(String actualText, String expectedText, String objName,String stepName, WebDriver dr) throws IOException{
+		if(expectedText.equals(actualText.trim())){
+			updateReport("Pass", stepName, "Actual text is matching with expected text",dr);
+		}else{
+			updateReport("Fail", stepName, "Actual text is not matching with expected text",dr);
+		}
+	}
+
 
 	/**
 	 * Check if the object is enabled or not
@@ -246,10 +280,10 @@ public class Cliniops_ReusableMethodsTest {
 
     public static void validateURL(String expectedURL,String ActualURL,String stepName,WebDriver dr) throws IOException{
     	if(expectedURL.trim().equals(ActualURL.trim())){
-    		updateReport("Pass","stepName","Actual URL matching with expected URL",dr);
+    		updateReport("Pass",stepName,"Actual URL matching with expected URL",dr);
     	}
     	else{
-    		updateReport("Fail","stepName","Actual URL matching with expected URL",dr);
+    		updateReport("Fail",stepName,"Actual URL matching with expected URL",dr);
     	}
 
     }
@@ -432,7 +466,11 @@ public class Cliniops_ReusableMethodsTest {
 		htmlName = null;
 		bw.close();
 	}
-    
+	/**
+	 * Login page module
+	 * @param dr
+	 * @throws IOException,InterruptedException
+    */	
     public static void login(WebDriver dr) throws InterruptedException, IOException{
 		dr.get("https://bridgetherapeutics.cliniops.com");
 		dr.findElement(By.id("username")).sendKeys("Abhishek");
@@ -446,8 +484,7 @@ public class Cliniops_ReusableMethodsTest {
 		dr.findElement(By.xpath("//*[text()='English']")).click();
 		dr.findElement(By.xpath(".//*[@id='login']/div[7]/input")).click();
 	}
-	
-	
+  
 
 
 }

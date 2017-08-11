@@ -1,73 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results skipped="2" failed="0" total="2" passed="0">
+<testng-results skipped="0" failed="0" total="1" passed="1">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="49" started-at="2017-07-31T19:49:51Z" finished-at="2017-07-31T19:49:51Z">
+  <suite name="Default suite" duration-ms="225256" started-at="2017-08-11T05:53:12Z" finished-at="2017-08-11T05:56:57Z">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="49" started-at="2017-07-31T19:49:51Z" finished-at="2017-07-31T19:49:51Z">
-      <class name="com.testing.Cliniops.Cliniops_AutomationScriptsTest">
-        <test-method status="FAIL" signature="selectBrowser(java.lang.String)[pri:0, instance:com.testing.Cliniops.Cliniops_AutomationScriptsTest@be92ad]" name="selectBrowser" is-config="true" duration-ms="0" started-at="2017-07-31T12:49:51Z" finished-at="2017-07-31T12:49:51Z">
-          <exception class="org.testng.TestNGException">
-            <message>
-              <![CDATA[
-Parameter 'browser' is required by @Configuration on method selectBrowser but has not been marked @Optional or defined
-in C:\Users\Zunaira's\AppData\Local\Temp\testng-eclipse-959181937\testng-customsuite.xml]]>
-            </message>
-            <full-stacktrace>
-              <![CDATA[org.testng.TestNGException: 
-Parameter 'browser' is required by @Configuration on method selectBrowser but has not been marked @Optional or defined
-in C:\Users\Zunaira's\AppData\Local\Temp\testng-eclipse-959181937\testng-customsuite.xml
-	at org.testng.internal.Parameters.createParameters(Parameters.java:154)
-	at org.testng.internal.Parameters.createParameters(Parameters.java:361)
-	at org.testng.internal.Parameters.createConfigurationParameters(Parameters.java:84)
-	at org.testng.internal.Invoker.invokeConfigurations(Invoker.java:197)
-	at org.testng.internal.Invoker.invokeMethod(Invoker.java:585)
-	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:816)
-	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1124)
-	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:125)
-	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:108)
-	at org.testng.TestRunner.privateRun(TestRunner.java:774)
-	at org.testng.TestRunner.run(TestRunner.java:624)
-	at org.testng.SuiteRunner.runTest(SuiteRunner.java:359)
-	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:354)
-	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:312)
-	at org.testng.SuiteRunner.run(SuiteRunner.java:261)
-	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
-	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
-	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1215)
-	at org.testng.TestNG.runSuitesLocally(TestNG.java:1140)
-	at org.testng.TestNG.run(TestNG.java:1048)
-	at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:132)
-	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:230)
-	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:76)
-]]>
-            </full-stacktrace>
-          </exception> <!-- org.testng.TestNGException -->
+    <test name="Default test" duration-ms="225256" started-at="2017-08-11T05:53:12Z" finished-at="2017-08-11T05:56:57Z">
+      <class name="com.testing.Cliniops.Cliniops_DriverScriptTest">
+        <test-method status="PASS" signature="cliniopsDriver()[pri:0, instance:com.testing.Cliniops.Cliniops_DriverScriptTest@68be2bc2]" name="cliniopsDriver" duration-ms="225225" started-at="2017-08-10T22:53:12Z" finished-at="2017-08-10T22:56:57Z">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- selectBrowser -->
-        <test-method status="SKIP" signature="auto_clini_login_001()[pri:0, instance:com.testing.Cliniops.Cliniops_AutomationScriptsTest@be92ad]" name="auto_clini_login_001" duration-ms="10" started-at="2017-07-31T12:49:51Z" finished-at="2017-07-31T12:49:51Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- auto_clini_login_001 -->
-        <test-method status="SKIP" signature="closeBrowser()[pri:0, instance:com.testing.Cliniops.Cliniops_AutomationScriptsTest@be92ad]" name="closeBrowser" is-config="true" duration-ms="0" started-at="2017-07-31T12:49:51Z" finished-at="2017-07-31T12:49:51Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- closeBrowser -->
-        <test-method status="SKIP" signature="selectBrowser(java.lang.String)[pri:0, instance:com.testing.Cliniops.Cliniops_AutomationScriptsTest@be92ad]" name="selectBrowser" is-config="true" duration-ms="0" started-at="2017-07-31T12:49:51Z" finished-at="2017-07-31T12:49:51Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- selectBrowser -->
-        <test-method status="SKIP" signature="auto_clini_login_005()[pri:0, instance:com.testing.Cliniops.Cliniops_AutomationScriptsTest@be92ad]" name="auto_clini_login_005" duration-ms="1" started-at="2017-07-31T12:49:51Z" finished-at="2017-07-31T12:49:51Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- auto_clini_login_005 -->
-        <test-method status="SKIP" signature="closeBrowser()[pri:0, instance:com.testing.Cliniops.Cliniops_AutomationScriptsTest@be92ad]" name="closeBrowser" is-config="true" duration-ms="0" started-at="2017-07-31T12:49:51Z" finished-at="2017-07-31T12:49:51Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- closeBrowser -->
-      </class> <!-- com.testing.Cliniops.Cliniops_AutomationScriptsTest -->
+        </test-method> <!-- cliniopsDriver -->
+      </class> <!-- com.testing.Cliniops.Cliniops_DriverScriptTest -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

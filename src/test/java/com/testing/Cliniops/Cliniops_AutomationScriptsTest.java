@@ -530,14 +530,14 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
     	String expectedText6="Profile Information";
     	checkContentsMatch(actualText6,expectedText6,"Profile Information","Profile Information",dr); 
     }
-@Test
-public void auto_Clini_Confg_001() throws InterruptedException, IOException{
+       @Test
+        public void auto_Clini_Confg_001() throws InterruptedException, IOException{
 	login(dr);
 	Thread.sleep(2000);
 	WebElement config=dr.findElement(By.xpath(".//*[text()='Configure']"));
-    Actions action=new Actions(dr);
-    action.moveToElement(config).build().perform();
-    Thread.sleep(3000);
+        Actions action=new Actions(dr);
+        action.moveToElement(config).build().perform();
+        Thread.sleep(3000);
 	String expectedTextColor="rgba(255, 255, 255, 1)";
 	String ActualTextColor = dr.findElement(By.xpath(".//*[text()='Configure']")).getCssValue("color");
 	Thread.sleep(2000);
@@ -547,11 +547,11 @@ public void auto_Clini_Confg_001() throws InterruptedException, IOException{
 	String ActualURL=dr.getCurrentUrl();
 	validateURL(ExpectedURL,ActualURL,"Configure URL Check",dr);
 	
-}
-@Test
-public void auto_Clini_Confg_004() throws InterruptedException, IOException
-
-{	login(dr);
+        }
+      @Test
+       public void auto_Clini_Confg_004() throws InterruptedException, IOException
+       {
+	login(dr);
 	Thread.sleep(3000);
 	WebElement configure_tab = dr.findElement(By.xpath(".//*[@id='nav']//li[2]"));
 	clickElement(configure_tab, "configureTab", "click configureTab", dr);
@@ -583,11 +583,69 @@ public void auto_Clini_Confg_004() throws InterruptedException, IOException
 	System.out.println(actualFileName);
 	checkContentsMatch(actualFileName, expFileName, "dataChange", "Choose FileName Check", dr);
 
+       }
 	
+	public void AUTO_CLINI_CONFG_005() throws InterruptedException, IOException {
+			 Login(dr);
+			// Thread.sleep(3000);
+			 WebElement configure_tab = dr.findElement(By.xpath(".//*[@id='nav']//li[2]"));
+			 clickElement(configure_tab, "configureTab", "click configureTab", dr);
+			 Thread.sleep(4000);
+			 //Verify appearance of Download file link.
+			 String expectedFileLink = "ICF - Interview...cians_v8.pdf";
+			 WebElement FileLink = dr.findElement(By.xpath(" //*[@id='study_general_settings']/div[2]/div[1]/fieldset[2]/div/span"));
+			 String actualFileLink = FileLink.getText();
+			 System.out.println(actualFileLink);
+			 checkContentsMatch(actualFileLink, expectedFileLink, "DownLoad File Link", "DownLoad File Link", dr);       
 
-	
+		 }
 
-}
+         public void AUTO_CLINI_CONFG_006() throws InterruptedException, IOException {
+			 Login(dr);
+			// Thread.sleep(3000);
+			 WebElement configure_tab = dr.findElement(By.xpath(".//*[@id='nav']//li[2]"));
+			 clickElement(configure_tab, "configureTab", "click configureTab", dr);
+			 //Thread.sleep(4000);
+
+			 //Verify appearance of dropdown data in "Subject ID:*" dropdown.
+
+			 WebElement selectSubId = dr.findElement(By.id("subjectId"));
+			 List<WebElement> Options = selectSubId.findElements(By.tagName("option"));
+			 for (WebElement option : Options) {
+				 if("Select option".equals(option.getText())){
+					 String expectedText = "Select option";
+					 String actualText = option.getText();
+					 System.out.println(actualText);
+					 checkContentsMatch(actualText, expectedText, "Select option is visible", "Select option is visible", dr);
+
+				 }
+				 if("Automatic".equals(option.getText())){
+					 String expectedText = "Automatic";
+					 String actualText = option.getText();
+					 System.out.println(actualText);
+					 checkContentsMatch(actualText, expectedText, "Automatic is visible", "Automatic is visible", dr);
+
+				 }
+
+				 // System.out.println(option.getText());
+				 if("Custom".equals(option.getText())) {
+					 String expectedText = "Custom";
+					 String actualText = option.getText();
+					 System.out.println(actualText);
+					 checkContentsMatch(actualText, expectedText, "Custom is visible", "Custom is visible", dr);
+					 clickElement(option, "select custom", "select custom option ", dr);
+					 break;
+				 }
+			 }
+
+
+
+
+
+		 }
+
+
+
     @AfterMethod
 
     public void closeBrowser(){

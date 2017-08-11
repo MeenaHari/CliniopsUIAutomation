@@ -48,6 +48,24 @@ public class Cliniops_ReusableMethodsTest {
 	    }
 	}
 	
+	
+	/**
+	 * 
+	 * @param actualText
+	 * @param expectedText
+	 * @param objName
+	 * @param stepName
+	 * @param dr
+	 * @throws IOException
+	 */
+	public static void checkContentsMatch(String actualText, String expectedText, String objName,String stepName, WebDriver dr) throws IOException{
+		if(expectedText.equals(actualText.trim())){
+			updateReport("Pass", stepName, "Actual text is matching with expected text",dr);
+		}else{
+			updateReport("Fail", stepName, "Actual text is not matching with expected text",dr);
+		}
+	}
+	
     /**
      * To click on specific object
      * @param obj:WebElement to be clicked
@@ -118,6 +136,23 @@ public class Cliniops_ReusableMethodsTest {
 			}
 		}else{
 			updateReport("Fail",stepName,objName+ " is not displayed, please check your application",dr);
+		}
+	}
+
+/**
+	 * 
+	 * @param actualText
+	 * @param expectedText
+	 * @param objName
+	 * @param stepName
+	 * @param dr
+	 * @throws IOException
+	 */
+	public static void validateText(String actualText, String expectedText, String objName, String stepName, WebDriver dr) throws IOException{
+		if(expectedText.equals(actualText.trim())){
+			updateReport("Pass", stepName, "Actual text is matching with expected text",dr);
+		}else{
+			updateReport("Fail", stepName, "Actual text is not matching with expected text",dr);
 		}
 	}
 

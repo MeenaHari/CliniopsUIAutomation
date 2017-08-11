@@ -379,13 +379,25 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
 			//Get the context menu rectangle "≡" and click on the button so pop up options are enabled
 			String menuLocator = locator + contId.get(i) + "]>div>svg>g.highcharts-button>rect";
 			WebElement chartMenu = dr.findElement(By.cssSelector(menuLocator));
-			Thread.sleep(4000);
+			Thread.sleep(2000);
 			System.out.println("check4....");
 			action.moveToElement(chartMenu).build().perform();
-			Thread.sleep(4000);
-			System.out.println("check5....");
-			action.click().build().perform();
-			Thread.sleep(5000);
+			Thread.sleep(2000);
+			
+			//chart menu click
+			String ExpectedBrowser="org.openqa.selenium.firefox.FirefoxDriver";
+			String ActualBrowser=dr.getClass().getName();
+			System.out.println(ActualBrowser);
+			if(ActualBrowser.equals(ExpectedBrowser))
+			{
+				chartMenu.click();
+			}
+			else
+			{
+				action.click().build().perform();
+			}
+			Thread.sleep(1000);
+			
 				
 			String popUpLocator = locator + contId.get(i) + "]>div>div.highcharts-contextmenu>div>div";
 			System.out.println("check6....");
@@ -422,16 +434,13 @@ public class Cliniops_AutomationScriptsTest extends Cliniops_ReusableMethodsTest
     	
     	//varify value(custom) visibility in subjectID dropdown 
     	String expSubjectId = "Custom";
-    	//WebElement subjectID_obj = dr.findElement(By.cssSelector("#subjectId"));
-    	List<WebElement> subjectID_options = dr.findElements(By.xpath(".//*[@id='subjectId']"));
-    	//System.out.println(subjectID_options.size());
-    	System.out.println(subjectID_options.get(0).getText());
-    	String actual_subjectID_option = subjectID_options.get(0).getText().substring(23);
-    	if(subjectID_options.get(0).getText().contains(expSubjectId))
+    	Thread.sleep(3000);
+    	String actual_subjectID_option=dr.findElement(By.xpath("//option[@value='Custom']")).getText();
+    	if(actual_subjectID_option.equals(expSubjectId))
     	{
-    		validateText(actual_subjectID_option, expSubjectId,"subjectID","SubjectID dropdown option", dr);
-    		System.out.println("Custom value is present in subjectID dropdown options....");
+    		checkContentsMatch(actual_subjectID_option, expSubjectId,"subjectID","SubjectID dropdown option", dr);
     	}
+    	System.out.println("Custom value is present in subjectID dropdown options");
 
     	//verify data change options present in textboxes
     	String expReasonForDataChange1 = "Invalid entry";
